@@ -1,0 +1,19 @@
+<ion-view title="Trace">
+    <ion-nav-buttons side="left">
+        <help-popover></help-popover>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <connection-status></connection-status>
+        <filters-popover ng-if="!mobile"></filters-popover>
+        <settings-popover></settings-popover>
+    </ion-nav-buttons>
+  <ion-content class="has-header fv-theme" scroll="false">
+      <!--This div, #traceWindow in this case, gets grabbed by d3 plotting features-->
+      <not-connected></not-connected>
+      <div ng-show="demo || flexvolt.api.connection.state === 'connected'" id="traceWindow" class="row fullsizeplot"></div>
+      <!-- <div id="traceWindow" class="row fullsizeplot" style="overflow: scroll;"></div> -->
+
+      <save-panel></save-panel>
+
+  </ion-content>
+</ion-view>
