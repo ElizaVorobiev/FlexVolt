@@ -35,7 +35,9 @@
         'flexvolt.rms',
         'flexvolt.settings',
         'flexvolt.snake',
-        'flexvolt.trace'
+        'flexvolt.trace',
+        //adding to states
+        'flexvolt.physiobuddy'
     ])
 
     .run(function($ionicPlatform, appLogic) {
@@ -145,6 +147,14 @@
             url: '/',
             templateUrl: 'pages/home/home.html',
             controller: 'HomeCtrl'
+        })
+
+        .state('physiobuddy', {
+            url: '/physiobuddy',
+            templateUrl: 'pages/physiobuddy/physiobuddy.html',
+            controller: 'PhysiobuddyCtrl',
+            onEnter: dataOn,
+            onExit: exitFunction
         })
 
         .state('trace', {
