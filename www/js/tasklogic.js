@@ -408,6 +408,12 @@ angular.module('flexvolt.taskLogic', [])
         ready: function(){return deferred.promise;}
     };
 }])
+
+.factory('physiobuddyLogic', ['$q', 'storage', 'logicOptions', function($q, storage, logicOptions) {
+  // set default filters and any settings 
+  // could do some fancy state stuff here, could use the settings object to store params?
+}]) 
+
 .factory('balloonLogic', ['$q', 'storage', 'logicOptions', function($q, storage, logicOptions) {
 
     var deferred = $q.defer();

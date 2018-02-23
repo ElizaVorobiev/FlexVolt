@@ -38,6 +38,11 @@
                             icon:"icon ion-android-pin",
                             ref:"balloon",
                             btnName:"Balloon"
+                        },
+                        b3: {
+                            icon:"icon ion-speedometer",
+                            ref:"physiobuddy",
+                            btnName: "Physiobuddy"
                         }
                     }
                 },

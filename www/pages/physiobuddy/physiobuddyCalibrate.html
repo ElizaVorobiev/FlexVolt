@@ -1,0 +1,19 @@
+<ion-view title="Physiobuddy">
+    <ion-nav-buttons side="left">
+        <help-popover></help-popover>
+        <save-panel ng-if="!mobile"></save-panel>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <connection-status></connection-status>
+        <filters-popover ng-if="!mobile"></filters-popover>
+        <settings-popover></settings-popover>
+    </ion-nav-buttons>
+  <ion-content class="has-header fv-theme" scroll="false">
+    <!-- <not-connected></not-connected> -->
+    <h1> Calibrate MVC</h1>
+    <p>Insert text here</p>
+    <div id = "physiobuddyCalibrateWindow">animations should go here</div>
+    <button ng-click = "setMVC()">StartRecording</button>
+    <button ui-sref = "physiobuddyCalibrated">Calibrated</button>
+  </ion-content>
+</ion-view>

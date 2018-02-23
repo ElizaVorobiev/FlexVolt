@@ -35,7 +35,8 @@
         'flexvolt.rms',
         'flexvolt.settings',
         'flexvolt.snake',
-        'flexvolt.trace'
+        'flexvolt.trace',
+        'flexvolt.physiobuddy'
     ])
 
     .run(function($ionicPlatform, appLogic) {
@@ -183,6 +184,49 @@
             url: '/myometer:demo',
             templateUrl: 'pages/myometer/myometer.html',
             controller: 'MyometerCtrl',
+            onEnter: dataOn,
+            onExit: exitFunction
+        })
+
+        .state('physiobuddy', {
+            url: '/physiobuddy',
+            templateUrl: 'pages/physiobuddy/physiobuddy.html',
+            controller: 'PhysiobuddyCtrl',
+            onEnter: dataOn,
+            onExit: exitFunction
+        })
+        .state('physiobuddyConnectBrace', {
+            url: '/physiobuddyConnectBrace',
+            templateUrl: 'pages/physiobuddy/physiobuddyConnectBrace.html',
+            controller: 'PhysiobuddyCtrl',
+            onEnter: dataOn,
+            onExit: exitFunction
+        })
+        .state('physiobuddyBraceConnected', {
+            url: '/physiobuddyBraceConnected',
+            templateUrl: 'pages/physiobuddy/physiobuddyBraceConnected.html',
+            controller: 'PhysiobuddyCtrl',
+            onEnter: dataOn,
+            onExit: exitFunction
+        })
+        .state('physiobuddyCalibrate', {
+            url: '/physiobuddyCalibrate',
+            templateUrl: 'pages/physiobuddy/physiobuddyCalibrate.html',
+            controller: 'PhysiobuddyCtrl',
+            onEnter: dataOn,
+            onExit: exitFunction
+        })
+        .state('physiobuddyCalibrated', {
+            url: '/physiobuddyCalibrated',
+            templateUrl: 'pages/physiobuddy/physiobuddyCalibrated.html',
+            controller: 'PhysiobuddyCtrl',
+            onEnter: dataOn,
+            onExit: exitFunction
+        })
+        .state('physiobuddyExercise', {
+            url: '/physiobuddyExercise',
+            templateUrl: 'pages/physiobuddy/physiobuddyExercise.html',
+            controller: 'PhysiobuddyCtrl',
             onEnter: dataOn,
             onExit: exitFunction
         })
