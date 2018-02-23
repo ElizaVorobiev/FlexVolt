@@ -468,7 +468,9 @@ angular.module('flexvolt.d3plots', [])
         api.reset();
     }
 
-    api.update = function(dataIn, isLive){
+    api.update = function(dataBundle, isLive){
+        var timestamps = dataBundle[0];
+        var dataIn = dataBundle[1];
         startPos = xPos > 0?xPos-1:0;
         xPos += dataIn[0].length;
         if (isLive) {
@@ -516,17 +518,16 @@ angular.module('flexvolt.d3plots', [])
     var leftPadding = 10;
     var rightPadding = 10;
 
-    var margin, width, height, plotElement, htmlElement, dT;
+    var margin, width, height, plotElement, htmlElement;
     var mar = 4;
-    margin = {left: 50, right: mar, top: mar, bottom: 35};
+    margin = {left: 50, right: mar, top: mar, bottom: 50};
     var PADDINGOFFSET = 8;
 
-    var svg, x, scaleX, y, autoY, xAxis, yAxis, zoom, line;
-    var panExtent, xMax;
-    var data = [], xPos = 0, startPos = 0;
-    var tmpData = [];
-
-    var yMax;
+    var svg, x, y, autoY, xAxis, yAxis, line;
+    var panExtent, zoom;
+    var xMax, yMax, stopPos, startPos;
+    var data = [], tmpData = [];
+    var downSampleN, downSampleCounter, downSampleMultiplier = 2;
 
     var api = {
       init:undefined,
@@ -534,6 +535,8 @@ angular.module('flexvolt.d3plots', [])
       resize:undefined,
       update:undefined,
       settings:{
+        windowSizeInSeconds: undefined,
+        userFrequency: undefined,
         nChannels: 1,
         zoomOption: 0,
         autoscaleY: false
@@ -565,16 +568,16 @@ angular.module('flexvolt.d3plots', [])
 //        svg.selectAll('path.line').call(line);
 
       // reset axes - had to add some code to handle the axis ticks being in seconds, not ms
-      scaleX = d3.scale.linear()
-          .domain([x.domain()[0]*dT, x.domain()[1]*dT])
-          .range([0, width]);
-
-      xAxis = d3.svg.axis()
-          .scale(scaleX)
-          .tickSize(-height)
-          .tickPadding(10)
-          .tickSubdivide(true)
-          .orient('bottom');
+      // scaleX = d3.scale.linear()
+      //     .domain([x.domain()[0]*dT, x.domain()[1]*dT])
+      //     .range([0, width]);
+      //
+      // xAxis = d3.svg.axis()
+      //     .scale(scaleX)
+      //     .tickSize(-height)
+      //     .tickPadding(10)
+      //     .tickSubdivide(true)
+      //     .orient('bottom');
 
       svg.select('.x.axis').call(xAxis);
       svg.select('.y.axis').call(yAxis);
@@ -627,6 +630,14 @@ angular.module('flexvolt.d3plots', [])
         return ret;
     };
 
+    function zeroData() {
+        data = [];
+        for (var i = 0; i < api.settings.nChannels;i++){
+            data[i] = [];
+            tmpData[i] = undefined;
+        }
+    }
+
     api.reset = function(){
 
         if (svg){
@@ -634,28 +645,20 @@ angular.module('flexvolt.d3plots', [])
             d3.select('svg').remove();
         }
 
-        xPos = 0;
-        startPos = 0;
-        data = [];
-        tmpData = [];
-        for (var i = 0; i < api.settings.nChannels;i++){
-            data[i] = [];
-            tmpData[i] = angular.undefined;
-        }
+        startPos = Date.now();
+        stopPos = startPos + xMax;
+        zeroData();
+        downSampleCounter = 0;
 
-        x = d3.scale.linear()
-            .domain([0, xMax])
-            .range([0, width]);
-
-        scaleX = d3.scale.linear()
-            .domain([x.domain()[0]*dT, x.domain()[1]*dT])
+        x = d3.time.scale()
+            .domain([startPos, stopPos])
             .range([0, width]);
 
         y = d3.scale.linear().range([height, 0]);
         if (api.settings.autoscaleY){
             y.domain([0, autoY()]);
-        }else {
-            y.domain([-0.01*yMax, yMax*1.01]);
+        } else {
+            y.domain([-1.01*yMax, yMax*1.01]);
         }
 
         if (api.settings.zoomOption === 'NONE'){
@@ -692,36 +695,56 @@ angular.module('flexvolt.d3plots', [])
 
         line = d3.svg.line()
             .interpolate('linear')
-            .x(function(d, i) { return x(startPos + i); })
-            .y(function(d, i) { return y(d); });
+            .x(function(d) { return x(d.time); })
+            .y(function(d) { return y(d.value); });
 
+        var nTicks = Math.floor(width/75)-1;
         xAxis = d3.svg.axis()
-            .scale(scaleX)
-            .tickSize(-height)
-            .tickPadding(10)
+            .scale(x)
             .tickSubdivide(true)
-            .orient('bottom');
+            .orient('bottom')
+            .tickFormat(d3.time.format("%I:%M:%S"))
+            .ticks(nTicks);
+
+        function make_x_axis() {
+            return d3.svg.axis()
+                .scale(x)
+                .orient("bottom")
+                .ticks(nTicks)
+        }
 
         yAxis = d3.svg.axis()
             .scale(y)
             .tickPadding(10)
-            .tickSize(-width)
+            .tickSize(0)
             .tickSubdivide(true)
             .orient('left');
 
         svg.append('g')
             .attr('class', 'x axis')
-//            .attr('fill','none')
             .attr('transform', 'translate(0,' + height + ')')
-            .call(xAxis);
+            .call(xAxis)
+            .selectAll("text")
+            .attr("y", 2)
+            .attr("x", 9)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(25)")
+            .style("text-anchor", "start");
+
+        svg.append("g")
+            .attr("class", "grid")
+            .attr("transform", "translate(0," + height + ")")
+            .call(make_x_axis()
+                .tickSize(-height, 0, 0)
+                .tickFormat("")
+            )
 
         svg.append('g')
             .attr('class', 'y axis')
-//            .attr('fill','none')
             .call(yAxis);
 
         svg.append('g')
-            .attr('class', 'y axis')
+            .attr('class', 'y label')
             .append('text')
             .attr('class', 'axis-label')
             .attr('transform', 'rotate(-90)')
@@ -730,12 +753,12 @@ angular.module('flexvolt.d3plots', [])
             .text('RMS Muscle Signal, mV');
 
         svg.append('g')
-            .attr('class', 'x axis')
+            .attr('class', 'x label')
             .append('text')
             .attr('class', 'axis-label')
-            .attr('y', height+35)
+            .attr('y', height+45)
             .attr('x', width/2)
-            .text('Time, s');
+            .text('Time, mm:ss');
 
         // keeps the zoom frame inside the plot window!
         svg.append('clipPath')
@@ -746,70 +769,105 @@ angular.module('flexvolt.d3plots', [])
 
     };
 
-    api.init = function(element, nChannels, newZoomOption, maxX, userFrequency, vMax){
+    function calculateDownSample() {
+      var maxDataPoints = api.settings.windowSizeInSeconds * api.settings.userFrequency; // max number of datapoints
+      downSampleN = Math.round(maxDataPoints / width / downSampleMultiplier); // we will downsample since we can't show them all anyway
+    }
+
+    api.init = function(element, nChannels, zoomOption, windowSizeInSeconds, userFrequency, vMax){
         htmlElement = element;
         plotElement = '#'+element;
         var html = document.getElementById(htmlElement);
         width = html.clientWidth - margin.left - margin.right - leftPadding - rightPadding,
         height = html.clientHeight - margin.top - margin.bottom - PADDINGOFFSET;
 
-        dT = 1/userFrequency;
-        xMax = maxX/dT; // seconds
+        api.settings.zoomOption = zoomOption;
+        api.settings.nChannels = nChannels;
+        api.settings.userFrequency = userFrequency;
+        api.settings.windowSizeInSeconds = windowSizeInSeconds; // It's in seconds!
+
+        xMax = api.settings.windowSizeInSeconds*1000; // size of Window in milliseconds (all times are in ms)
+        yMax = vMax;
+        calculateDownSample(); // check out downSampleMultiplier
         panExtent = {x: [0,xMax], y: [-0.01*yMax,1.01*yMax] };
 
-        yMax = vMax;
+        // window start/stop points in time
+        startPos = Date.now();
+        stopPos = startPos + xMax;
 
-        xPos = 0;
-        startPos = 0;
-
-        api.settings.zoomOption = newZoomOption;
-        api.settings.nChannels = nChannels;
-
-        api.reset();
+        api.reset(); // setup all the svg/d3 stuff
     };
 
-    api.update = function(dataIn){
-        startPos = xPos > 0?xPos-1:0;
-        xPos += dataIn[0].length;
-        if (xPos >= xMax){
-            xPos = xPos%xMax;
-            startPos = 0;
-            for (var ind in dataIn){
-                dataIn[ind].splice(0,dataIn[ind].length-xPos); // over ran width, splice out data up to width
-            }
+    api.update = function(dataBundle){
+        var timestamps = dataBundle[0];
+        var dataIn = dataBundle[1];
+
+        // see if data goes past current window
+        if (timestamps[timestamps.length-1] > stopPos){
+
+            // reset stored data and remove all lines from plot
+            zeroData();
             svg.selectAll('path.line').remove();
-            data = [];
-            for (var i = 0; i < api.settings.nChannels;i++){
-                data[i] = [];
-                tmpData[i] = angular.undefined;
+
+            // throw away any data points that would be on the previous plot
+            var ind = timestamps.findIndex(function(el){return el >= stopPos});
+            timestamps.slice(0,ind);
+            for (var iC=0; iC < api.settings.nChannels; iC++){
+              dataIn[iC].slice(0,ind)
             }
+
+            // update time window for x axis
+            startPos = stopPos;
+            stopPos = startPos + xMax;
+            x.domain([startPos, stopPos]);
+            xAxis.scale(x);
+            svg.select("g.x.axis").call(xAxis);
         }
 
         if (api.settings.autoscaleY){
             y.domain([0, autoY()]);
         }
 
-        for (var i = 0; i < api.settings.nChannels; i++){
-            data[i] = data[i].concat(dataIn[i]);
-            if (tmpData[i]) {dataIn[i].splice(0,0,tmpData[i]);}
+        // convert the new data to the object format desired by d3, then add it to the current data object
+        for (var i=0; i<api.settings.nChannels; i++){
+            // put last element from previous path into first position, so lines connect
+            if (tmpData[i]) {data[i].splice(0,0,tmpData[i]);}
 
+            // cycling through nChannels times, only modify downSampleCounter once
+            var tmpDownSampleCounter = downSampleCounter;
+
+            for (var j=0; j<timestamps.length; j++){
+                if (dataIn[i][j] !== angular.undefined) {
+                    tmpDownSampleCounter ++;
+                    if (tmpDownSampleCounter === downSampleN) {
+                        data[i].push({time: timestamps[j], value: dataIn[i][j]});
+                        tmpDownSampleCounter = 0;
+                    }
+                }
+            }
+
+            // add a new path with the updated data
+            // (plus one data point from the preceding path so the paths are continuous)
             svg.append('svg:path')
-                .datum(dataIn[i])
+                .datum(data[i])
                 .attr('class', 'line')
                 .attr('clip-path', 'url(#clip)')
                 .attr('stroke', colorList[i%colorList.length])
                 .attr('d', line);
 
-            tmpData[i] = dataIn[i].slice(-1)[0];
+            tmpData[i] = data[i].slice(-1)[0]; // grab last element to connect next path
+            data[i] = []; // already plotted data - clear it for next update
         }
+        downSampleCounter = tmpDownSampleCounter;
     };
 
     api.resize = function(){
         var html = document.getElementById(htmlElement);
-        // width = html.clientWidth - margin.left - margin.right - leftPadding - rightPadding,
         var calculatedWidth = window.innerWidth - 10 - 150;
         width = calculatedWidth - margin.left - margin.right - leftPadding - rightPadding,
         height = html.clientHeight - margin.top - margin.bottom - PADDINGOFFSET;
+
+        calculateDownSample(); // number of pixels changed - might need to alter downsampling
 
         api.reset();
     };

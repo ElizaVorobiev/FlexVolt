@@ -29,9 +29,6 @@ $dark:                            #444 !default;
   padding: 25px;
   color: black; }
 
-path.line {
-  fill: none; }
-
 .my-icon-col {
   text-align: center !important; }
 
@@ -112,31 +109,98 @@ i.record-icon {
   flex: 0 0 10px;
   max-width: 10px; }
 
+/* Control Panels */
+.control-panel-container {
+  padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.control-panel-strip {
+  padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-left: 1px solid rgb(75,75,75);
+  border-right: 1px solid rgb(75,75,75);
+}
+/* Battery Monitor */
+
+.battery {
+	--battery-width: 46px;
+  --battery-height: 22px;
+  --battery-border: 3px;
+  --battery-full-width: calc(var(--battery-width) - 10px - 2*var(--battery-border));
+  width: calc(var(--battery-width) + 2*var(--battery-border));
+  height: calc(var(--battery-height) + 2*var(--battery-border));
+  padding-top: 6px;
+  display: inline-block;
+}
+.battery-body {
+  background: #fff;
+  border: var(--battery-border) solid #000;
+  margin: 0px;
+  width: calc(var(--battery-width) - 10px);
+  height: calc(var(--battery-height));
+  position: absolute;
+  border-radius: 5px;
+}
+.battery-nub {
+  background: transparent;
+  border: calc(var(--battery-border)/2) solid #000;
+  margin: calc(var(--battery-height)*1/4) calc(var(--battery-width) - 10px);
+  width: calc(var(--battery-width)*.05);
+  height: calc(var(--battery-height)/2);
+  position: absolute;
+  border-radius: 2px;
+}
+.battery-level {
+  background: #0f0;
+  margin: var(--battery-border);
+  height: calc(var(--battery-height) - 2*var(--battery-border));
+  position: absolute;
+}
+
 /* Plotting styles */
 .fullsizeplot {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
-  bottom: 0; }
+  bottom: 0;
+}
 
 .axisnoline path {
   fill: none;
-  stroke: none; }
+  stroke: none;
+}
 
 .axis {
-  shape-rendering: crispEdges; }
+  shape-rendering: crispEdges;
+}
+
+path.line {
+  fill: none;
+}
 
 .y.axis line,
 .x.axis line {
-  stroke: none; }
-
-.x.axis path {
-  display: none; }
-
-.y.axis path {
   fill: none;
-  stroke: #000; }
+  stroke: #000;
+}
+
+.y.axis path,
+.x.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
+.grid path {
+      stroke-width: 0;
+}
 
 #balloonContainer {
   position: relative;
@@ -162,8 +226,8 @@ i.record-icon {
   border-radius: 100%;
   position: absolute;
   background: #002f53;
-  -webkit-transition: width 0.8s, height 0.8s, -webkit-transform 0.8s;
-  /* Safari */ }
+  -webkit-transition: width 0.8s, height 0.8s, -webkit-transform 0.8s; /* Safari */
+}
 
 /*!
   Ionicons, v2.0.1

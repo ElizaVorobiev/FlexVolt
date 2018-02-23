@@ -16,8 +16,8 @@
 
 angular.module('flexvolt.dsp', [])
 
-.factory('dataHandler', ['flexvolt', '$stateParams', '$ionicPopup', '$interval', '$state', 'storage', 'hardwareLogic', 'filters', 'file', 'records',
-    function (flexvolt, $stateParams, $ionicPopup, $interval, $state, storage, hardwareLogic, filters, file, records) {
+.factory('dataHandler', ['flexvolt', '$stateParams', '$ionicPopup', '$interval', '$state', 'storage', 'hardwareLogic', 'filters', 'file', 'records', 'rmsTimeLogic', 'traceLogic',
+    function (flexvolt, $stateParams, $ionicPopup, $interval, $state, storage, hardwareLogic, filters, file, records, rmsTimeLogic, traceLogic) {
 
         window.file = file;
         // list of possible filters
@@ -28,16 +28,17 @@ angular.module('flexvolt.dsp', [])
         var recordedDataRaw = [];
         var recordedDataProcessed = [];
         var recordedDataFile = undefined;
+        var currentRecordMetaData = undefined;
         var selectedRecordLocal = undefined;
         var nChannels = 1; // default
         var metricsArr, metricsFlag = false, metricsNPoints = 500;
         var demoVals = {
-            fs: 500,
+            fs: 1000,
             time: 0,
             startTime: undefined,
             randAmplitude: 10,
-            amplitudes: [.20, .50, .20, .22, .70, .20, .10, .10],
-            frequencies: [0.05, 0.10, 0.5, 1, 30, 50, 70, 100]
+            amplitudes: [.50, .50, .50, .50, .50, .50, .50, .50],
+            frequencies: [0, 0.10, 0.5, 1, 5, 10, 50, 100]
         };
 
         var timerInterval;
@@ -72,23 +73,24 @@ angular.module('flexvolt.dsp', [])
         // Demo simulation data
         function generateData(G) {
             G = (G !== angular.undefined)?G:1;
-            var gen = [];
-            var tmp = new Date();
-            var tmpTime = tmp.getTime();
+            var genTimes = [];
+            var genData = [];
+            var tmpTime = Date.now();
             var nPoints = Math.round(demoVals.fs*(tmpTime - demoVals.startTime)/1000);
 
             demoVals.startTime = tmpTime;
 
             for (var i = 0; i<nPoints; i++) {
-                demoVals.time += 1/demoVals.fs;
+                demoVals.time += 1000/demoVals.fs;
+                genTimes[i] = demoVals.time;
                 for (var ch = 0; ch < nChannels; ch++){
                     if (i === 0){
-                        gen[ch] = [];
+                        genData[ch] = [];
                     }
-                    gen[ch][i] = G*demoVals.amplitudes[ch]*Math.sin(demoVals.time*2*Math.PI*demoVals.frequencies[ch]);
+                    genData[ch][i] = G*demoVals.amplitudes[ch]*Math.sin((demoVals.time/1000)*2*Math.PI*demoVals.frequencies[ch]);
                 }
             }
-            return gen;
+            return [genTimes, genData];
         }
 
         // memory management - completely remove all reference to filter objects
@@ -105,8 +107,9 @@ angular.module('flexvolt.dsp', [])
 
         // Handles changes to settings in real time
         api.init = function(nChan){
-            var tmp = new Date();
-            demoVals.startTime = tmp.getTime();  // only needed for demo simulation
+            var tmp = Date.now();
+            demoVals.startTime = tmp;  // only needed for demo simulation
+            demoVals.time = tmp;
             demoVals.fs = hardwareLogic.settings.frequency;
             nChannels = nChan;  // have a default of 1
 
@@ -226,24 +229,20 @@ angular.module('flexvolt.dsp', [])
             // console.log('addToMetrics old took ' + (toc-tic));
         }
 
-        api.controls.serveRecord = function() {
-            selectedRecordLocal = api.controls.selectedRecord.data;
-        };
-
         api.getData = function(){
-            var parsedData;
+            var dataBundle;
+            var parsedData, timestamps;
             // Get Data (real or simulated)
             if (!api.controls.live) {
                 // only serve this data once, then undefined
-                parsedData = selectedRecordLocal;
+                dataBundle = selectedRecordLocal; // [timestamps, dataIn]
                 selectedRecordLocal = undefined;
-                return parsedData;
             } else {
               if ($stateParams.demo){
                   // simulate data
-                  parsedData = generateData();
+                  dataBundle = generateData(); // [timestamps, dataIn]
               } else {
-                  parsedData = flexvolt.api.getDataParsed();
+                  dataBundle = flexvolt.api.getDataParsed(); // [timestamps, dataIn]
               }
             }
 
@@ -252,18 +251,21 @@ angular.module('flexvolt.dsp', [])
                 return undefined;
             }
 
-            if (parsedData[0] === angular.undefined || parsedData[0].length <= 0){
+            if (dataBundle === null || dataBundle === angular.undefined || dataBundle[0] === angular.undefined || dataBundle[0].length <= 0){
+                parsedData = [];
+                timestamps = [];
                 for (var i = 0; i < nChannels; i++){
                     parsedData[i] = [];
                 }
-                return parsedData;
+                return [timestamps, parsedData];
             }
+
+            timestamps = dataBundle[0];
+            parsedData = dataBundle[1];
 
             // save raw data if specified
             if (api.controls.recording){
-                for (var i = 0; i < parsedData[0].length; i++){
-                    recordedDataTime.push(api.controls.recordTimer);
-                }
+                recordedDataTime = recordedDataTime.concat(timestamps);
                 for (var i = 0; i < nChannels; i++){
                     recordedDataRaw[i] = recordedDataRaw[i].concat(parsedData[i]);
                     localRecordedData[i] = localRecordedData[i].concat(parsedData[i]);
@@ -295,7 +297,7 @@ angular.module('flexvolt.dsp', [])
                 addToMetrics(parsedData);
             }
 
-            return parsedData;
+            return [timestamps, parsedData];
         };
 
         function initRecordedData() {
@@ -303,7 +305,7 @@ angular.module('flexvolt.dsp', [])
             localRecordedData = [];
             recordedDataRaw = [];
             recordedDataProcessed = [];
-            recordedDataTime = ['Time (seconds)'];
+            recordedDataTime = ['Time (ms)'];
             for (var i = 0; i < nChannels; i++){
                 recordedDataRaw[i] = ['Chan ' + (i+1) + ' Raw'];
                 recordedDataProcessed[i] = ['Chan ' + (i+1) + 'Processed'];
@@ -347,6 +349,19 @@ angular.module('flexvolt.dsp', [])
           api.controls.live = !api.controls.live;
         }
 
+        function initRecord() {
+          currentRecordMetaData = {
+            taskName: $state.current.name,
+            startTime: (new Date()).toLocaleString(),
+            hardwareSettings: hardwareLogic.settings,
+            softwareSettings: {
+              rmsTimeLogic: rmsTimeLogic.settings,
+              traceLogic: traceLogic.settings
+            },
+            fileName: recordedDataFile,
+          }
+        }
+
         api.controls.startRecording = function(){
             if (angular.isDefined(file.path)) {
               api.controls.recording = true;
@@ -355,6 +370,7 @@ angular.module('flexvolt.dsp', [])
                   api.controls.recordTimer += 1;
               },1000);
               initRecordedData();
+              initRecord();
               var d = new Date();
               recordedDataFile = 'flexvolt-recorded-data--'+d.getFullYear()+'-'
                   +(d.getMonth()+1)+'-'+d.getDate()+'--'
@@ -381,18 +397,26 @@ angular.module('flexvolt.dsp', [])
             // write and close txt file
             saveRecordedData();
             file.closeFile();
-            recordedDataFile = undefined;
 
-            // put the record in records container for later viewing
-            var newRecord = {
-              task: $state.current.name,
-              dateTime: (new Date()).toLocaleString(),
-              length: localRecordedData[0].length,
-              settings: hardwareLogic.settings,
-              data: localRecordedData
-            }
+
+            // add fields to record metadata
+            currentRecordMetaData.dataLength = localRecordedData[0].length,
+            currentRecordMetaData.stopTime = new Date();
+
+            // clear globals
             localRecordedData = [];
+            recordedDataFile = undefined;
             records.put(newRecord);
+        };
+
+        api.controls.serveRecord = function() {
+            console.log('loading ' + JSON.stringify(api.controls.selectedRecord));
+            file.readFile(api.controls.selectedRecord.fileName)
+                .then(function(result){
+                    console.log(result);
+                    selectedRecordLocal = result; // [timestamps, dataIn]
+                })
+
         };
 
         return api;
