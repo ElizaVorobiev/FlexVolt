@@ -1,17 +1,44 @@
 <ion-view title="Calibration">
+
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
         <save-panel ng-if="!mobile"></save-panel>
     </ion-nav-buttons>
+
     <ion-nav-buttons side="right">
         <connection-status></connection-status>
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
     </ion-nav-buttons>
-  <ion-content class="has-header fv-theme" scroll="false">
-    <!-- <not-connected></not-connected> -->
-    <h1> Step 2: Complete</h1>
-    <p>Your brace is now ready to go! Here's a reminder of your exercise:</p>
-    <button ui-sref = "physiobuddyExercise">Start Exercise</button>
-  </ion-content>
+    
+    <ion-content class="has-header fv-theme-calibrate" " scroll="false">
+        <div class = "card">
+        <!-- <not-connected></not-connected> -->
+            <div>
+                <h2 class  = "calibrate-content-title"> Step 2: Complete</h2> 
+            </div>
+            
+            <div>
+                
+                <div align="center">
+                    <p class  = "calibrate-content-instructions"> Your brace is now ready to go! Here's a reminder of your exercise: </br> </p> 
+                </div>
+                
+                <div class  = "calibrate-content-instructions">
+                    <ul style = "list-style-type:disc" >
+                      <li>Sit on the ground and place your <b> legs in front </b> of you in a relaxed position.</li></br>
+                      <li>Push your injured <b> knee to the ground </b> to move the meter. Once the meter is in the green zone, the timer will begin.</li></br>
+                      <li><b>Hold</b> this posistion and ensure the meter stays in the green zone until the timer reaches zero.</li></br>
+                      <li><b>Relax</b> your legs and rest for one minute.</li></br>
+                    </ul>
+                 </div>
+
+            </div>
+            
+            <div class = "calibrate-content-button">
+                <button ui-sref = "physiobuddyExercise", class = "button" >Start Exercise</button>
+            </div>
+            
+        </div>
+    </ion-content>
 </ion-view>

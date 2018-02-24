@@ -33,7 +33,7 @@ box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 .calibrate-content-title{
  color: #2980B9; 
  text-align:center;
- font-family: Helvetica;
+ font-family: Open Sans;
 }
 
 .calibrate-content-instructions{
@@ -53,7 +53,7 @@ box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 .calibrate-content-pictures{
 		background-color: #F2F2F2;
 		background-color-opacity: 20%;
- margin-left: none !important;
+    margin-left: none !important;
     margin-right: none!important;
     padding: 10%;
 }
@@ -70,8 +70,9 @@ box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   border-width: 1px;
   color: #ffffff;
   font-size: 100%;
-;
   text-align: center;
+;
+ 
 }
 
 
