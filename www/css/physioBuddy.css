@@ -33,6 +33,7 @@ box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 .calibrate-content-title{
  color: #2980B9; 
  text-align:center;
+ font-family: Helvetica;
 }
 
 .calibrate-content-instructions{
@@ -46,22 +47,31 @@ box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .calibrate-content-countdown{
-	margin: 10%;
+	margin: 5%;
 }
 
 .calibrate-content-pictures{
 		background-color: #F2F2F2;
 		background-color-opacity: 20%;
+ margin-left: none !important;
+    margin-right: none!important;
+    padding: 10%;
 }
 
 .calibrate-content-button{
-	background-color: #3498DB; 
-    border: #2980B9;
-    padding: 15px 32px;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
+  margin:2%;
+  text-align: center;
 }
+
+.button{
+  background: #3498db;
+  border-radius: 28px;
+  border-color: 2A9FD8;
+  border-width: 1px;
+  color: #ffffff;
+  font-size: 100%;
+;
+  text-align: center;
 }
 
 
