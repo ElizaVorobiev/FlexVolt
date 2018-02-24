@@ -90,24 +90,5 @@
   align-items: center;
 }
 
-#calibration-exercise-picture-left img{  
-    height: 20%;
-    width: 20%;
-    margin: 2%;
-    align-items: left;
-}
-#calibration-exercise-picture-right img{  
-    height: 20%;
-    width: 20%;
-    margin: 2%;
-    align-items: right;
-}
-
-#calibration-exercise-picture-arrow img{  
-    height: 10%;
-    width: 10%;
-    margin: 5%;
-    align-items: right;
-}
 
 /* EXERCISE PAGE */
