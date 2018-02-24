@@ -67,8 +67,10 @@
 	.controller('PhysiobuddyCalibrateCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup', '$interval', 'physiobuddyCalibratePlot', 'physiobuddyLogic', 'dataHandler', 'hardwareLogic',
     function($scope, $state, $stateParams, $ionicPopup, $interval, physiobuddyCalibratePlot, physiobuddyLogic, dataHandler, hardwareLogic) {
 
+    	var afID;
+    	var frameCounts = 0;
     	var currentUrl = $state.current.url;
-      	var stateInterval, myPopup, mvcData, mvcRange, barMax;
+      	var stateInterval, myPopup, mvcData, mvcRange;
 
       	var states = {
 	        getReady: {
@@ -150,7 +152,7 @@
     	//function called when the user clicks start recording on Calibrate your brace page
     	$scope.setMVC = function(chan){
        	 	$scope.calibrating = true;
-        	$scope.physiobuddyMVC.channel = chan;
+        	$scope.physiobuddyMVC.channel = 0;
         	$scope.physiobuddyMVC.state = states.getReady;
 	        $scope.physiobuddyMVC.counter = $scope.physiobuddyMVC.state.count;
 	        $scope.physiobuddyMVC.msg = $scope.physiobuddyMVC.state.msg.replace('XT',''+$scope.physiobuddyMVC.counter);
@@ -173,7 +175,7 @@
 
 	        // convert data to downsampled and scale-factored form
 	        var dataOut = [];
-	        if (dataIn[0].length == 0){
+	        if (dataIn[0].length === 0){
 	        	dataIn[0].value = 0
 	        }
 
