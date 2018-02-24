@@ -148,8 +148,15 @@
 	    	- Popover before starting exercise with info, click into exercise from here
     	*/
     	//function called when the user clicks start recording on Calibrate your brace page
-    	$scope.setMVC = function(){
-
+    	$scope.setMVC = function(chan){
+       	 	$scope.calibrating = true;
+        	$scope.physiobuddyMVC.channel = chan;
+        	$scope.physiobuddyMVC.state = states.getReady;
+	        $scope.physiobuddyMVC.counter = $scope.physiobuddyMVC.state.count;
+	        $scope.physiobuddyMVC.msg = $scope.physiobuddyMVC.state.msg.replace('XT',''+$scope.physiobuddyMVC.counter);
+	        // physiobuddyCalibratePlot.addText($scope.physiobuddyMVC.msg);
+	        console.log('setMVC' + $scope.physiobuddyMVC.msg);
+	        stateInterval = $interval(mvcProcessor,1000);
     	};
 
 
