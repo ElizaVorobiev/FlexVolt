@@ -242,7 +242,7 @@
         //console.log(dataOut);
 
         myometerPlot.update(dataOut);
-      }
+      };
 
       function paintStep(){
         if ($state.current.url === currentUrl){
@@ -255,7 +255,7 @@
         } else if ($state.current.url === '/connection'){
           afID = window.requestAnimationFrame(paintStep);
         }
-      }
+      };
 
       function init() {
         if($state.current.url === currentUrl){
@@ -274,10 +274,9 @@
                 paintStep();
             });
         }
-      }
+      };
 
-      window.onresize = function(){
-          if (afID){
+           if (afID){
             window.cancelAnimationFrame(afID);
           }
           afID = undefined;

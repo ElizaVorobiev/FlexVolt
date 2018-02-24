@@ -68,7 +68,7 @@
     function($scope, $state, $stateParams, $ionicPopup, $interval, physiobuddyCalibratePlot, physiobuddyLogic, dataHandler, hardwareLogic) {
 
     	var currentUrl = $state.current.url;
-      	var stateInterval, myPopup, mvcData;
+      	var stateInterval, myPopup, mvcData, mvcRange, barMax;
 
       	var states = {
 	        getReady: {
@@ -159,9 +159,70 @@
 	        stateInterval = $interval(mvcProcessor,1000);
     	};
 
+	    function updateAnimate(){
+	        if ($scope.updating)return; // don't try to draw any graphics while the settings are being changed
+
+	        var dataIn = dataHandler.getData();
+	        if (dataIn === null || dataIn === angular.undefined ||
+	            dataIn[0] === angular.undefined || dataIn[0].length === 0){return;}
+
+	        // store data if we are taking a baseline
+	        if ($scope.physiobuddyMVC.state.name === 'measuring'){
+	          mvcData = mvcData.concat(dataIn[$scope.physiobuddyMVC.channel]);
+	        }
+
+	        // convert data to downsampled and scale-factored form
+	        var dataOut = [];
+	        if (dataIn[0].length == 0){
+	        	dataIn[0].value = 0
+	        }
+
+	        dataOut = dataIn[0];
+	        console.log(dataOut);
+
+	        // physiobuddyCalibratePlot.update(dataOut);
+   		};
+
+	    function paintStep(){
+	        if ($state.current.url === currentUrl){
+	          afID = window.requestAnimationFrame(paintStep);
+	          frameCounts++;
+	          if (frameCounts > 5){
+	            frameCounts = 0;
+	            updateAnimate();
+	          }
+	        } else if ($state.current.url === '/connection'){
+	          afID = window.requestAnimationFrame(paintStep);
+	        }
+	    };
 
 
+	    function init() {
+	        if($state.current.url === currentUrl){
+	          physiobuddyLogic.ready()
+	            .then(function(){
+	                physiobuddyLogic.settings.nChannels = Math.min(physiobuddyLogic.settings.nChannels,hardwareLogic.settings.nChannels);
+	                dataHandler.init(physiobuddyLogic.settings.nChannels);
+	                for (var i= 0; i < physiobuddyLogic.settings.filters.length; i++){
+	                    dataHandler.addFilter(physiobuddyLogic.settings.filters[i]);
+	                }
+	    //            dataHandler.setMetrics(60);
+	                // physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax, updateTargets);
+	                paintStep();
+	            });
+	        }
+	      }
 
-      //init();
+	           if (afID){
+	            window.cancelAnimationFrame(afID);
+	          }
+	          afID = undefined;
+	          $scope.updating  = true;
+	          // physiobuddyCalibratePlot.resize();
+	          $scope.updating  = false;
+	          paintStep();
+	      };
+
+	      init();
     }])
 }())
