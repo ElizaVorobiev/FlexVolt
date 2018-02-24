@@ -213,7 +213,8 @@
 	        }
 	      }
 
-	           if (afID){
+    	window.onresize = function() {
+	          if (afID){
 	            window.cancelAnimationFrame(afID);
 	          }
 	          afID = undefined;
@@ -221,7 +222,7 @@
 	          // physiobuddyCalibratePlot.resize();
 	          $scope.updating  = false;
 	          paintStep();
-	      };
+	    };
 
 	      init();
     }])
