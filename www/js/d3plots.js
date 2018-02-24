@@ -245,6 +245,15 @@ angular.module('flexvolt.d3plots', [])
 
     return api;
 })
+
+.factory('physiobuddyCalibratePlot', function () {
+
+})
+
+.factory('physiobuddyExercisePlot', function () {
+
+})
+
 .factory('xyDot', function() {
     var mar, margin, width, height, plotElement;
     mar = 10;
