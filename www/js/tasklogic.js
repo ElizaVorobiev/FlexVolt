@@ -412,6 +412,48 @@ angular.module('flexvolt.taskLogic', [])
 .factory('physiobuddyLogic', ['$q', 'storage', 'logicOptions', function($q, storage, logicOptions) {
   // set default filters and any settings 
   // could do some fancy state stuff here, could use the settings object to store params?
+  var deferred = $q.defer();
+    var settings = {
+        nChannels: 1,
+        zoomOption: 'NONE',
+        filters:[],
+        xMax: 20,
+        mvc: 0,
+        labels: []
+    };
+
+    storage.get('physiobuddySettings')
+        .then(function(tmp){
+            if (tmp){
+                for (var field in tmp){
+                    settings[field] = tmp[field];
+                }
+            } else {
+              // Default filters - band pass then rectify and then averaging
+              var Filter1 = angular.copy(logicOptions.filterOptions.filter(function(item){ return item.name === 'Frequency - Band Pass';})[0]);
+              Filter1.params.f1.value = 5;
+              Filter1.params.f2.value = 500;
+              settings.filters.push(Filter1);
+              
+              var Filter2 = angular.copy(logicOptions.filterOptions.filter(function(item){ return item.name === 'Rectify';})[0]);
+              settings.filters.push(Filter2);
+              
+              var Filter3 = angular.copy(logicOptions.filterOptions.filter(function(item){ return item.name === 'Average';})[0]);
+              Filter3.params.windowSize.value = 10;
+              settings.filters.push(Filter3);
+            }
+            deferred.resolve();
+        });
+
+    function updateSettings(){
+        storage.set({physiobuddySettings:settings});
+    }
+
+    return {
+        settings: settings,
+        updateSettings: updateSettings,
+        ready: function(){return deferred.promise;}
+    };
 }]) 
 
 .factory('balloonLogic', ['$q', 'storage', 'logicOptions', function($q, storage, logicOptions) {
