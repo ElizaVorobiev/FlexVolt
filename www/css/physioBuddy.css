@@ -6,3 +6,28 @@
     color: #000; }
     .bar.bar-balanced .title {
       color: #000; }
+.nav-bar-block {
+  position: left;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 9; }
+
+.fv-theme-calibrate {
+  background-color: #3498DB; }
+
+/* White part of the calibration page */
+ .calibrate-content {
+ 	background-color: #FFFFFF;
+ 	position: absolute;
+ 	width: 80%;
+  	height: 75%;
+  	left: 50%;
+  	top: 50%;
+  	padding: 20px;
+ }
+
+.calibrate-content-title{
+
+
+}
