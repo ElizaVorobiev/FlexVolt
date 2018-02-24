@@ -483,6 +483,7 @@ angular.module('flexvolt.dsp', [])
             }
             return dOut;
         }
+
         params.buffer = params.buffer.concat(dataIn);
         var dataOut = calc(params.buffer, timeWindow);
         params.buffer.splice(0,params.buffer.length-2*Math.floor(timeWindow/2));

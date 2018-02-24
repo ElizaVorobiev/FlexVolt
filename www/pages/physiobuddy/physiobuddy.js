@@ -5,25 +5,25 @@
 
     .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'myometerPlot', 'myometerLogic', 'dataHandler', 'hardwareLogic', 'customPopover',
     function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, myometerPlot, myometerLogic, dataHandler, hardwareLogic, customPopover) {
-      
 
-    	/* Physiobuddy home 
+
+    	/* Physiobuddy home
 			- display some info about user (todo:later)
 			- button that says do my exercises
     	*/
 
     	/* Step 1a : Connect Brace --> Maybe we skip this one for now?
 			- check that connected
-			- switch template 
+			- switch template
     	*/
 
-    	/* Step 1b : Brace is Connected 
+    	/* Step 1b : Brace is Connected
 			- show picture of exercise
 			- Button to calibrate - takes you to next step
     	*/
 
     	/* Step 3 : do exercise
-			- start looking at data right away? 
+			- start looking at data right away?
 			- process data
 				- display counter ( js)
 				- display visual feedback (d3)
@@ -37,27 +37,27 @@
 
     	};
 
-    	/* 
-			Data processing function 
+    	/*
+			Data processing function
 				- if above MVC and atMVC is false
 					call hitMVC()
 				- if below MVC and atMVC is true
 					call offMVC()
-				- if atMVC = true and doneExercise == true then 
+				- if atMVC = true and doneExercise == true then
 					break
 					call completedSet()
-				dataVal = 
+				dataVal =
     	*/
 
 
       //init();
     }])
-	
-    /* Step 2 : Calibrate Brace 
+
+    /* Step 2 : Calibrate Brace
 		- display images
 		- d3 animate
-		- start recording data 
-    	- cancel recording data 
+		- start recording data
+    	- cancel recording data
     	- process data
     	- set new MVC
     	- show progress bar
@@ -68,7 +68,7 @@
     function($scope, $state, $stateParams, $ionicPopup, $interval, physiobuddyCalibratePlot, physiobuddyLogic, dataHandler, hardwareLogic) {
 
     	var currentUrl = $state.current.url;
-      	var stateInterval, myPopup, baselineData;
+      	var stateInterval, myPopup, mvcData;
 
       	var states = {
 	        getReady: {
@@ -116,7 +116,7 @@
 	    	} else {
 	    		//get next state
 	    		$scope.physiobuddyMVC.state = states[$scope.physiobuddyMVC.state.nextState];
-				
+
 				if ($scope.physiobuddyMVC.state.name === 'measuring'){
 					//if next state is to measure MVC make sure mvcData is cleared and defined
 					mvcData = [];
@@ -127,7 +127,7 @@
 						$scope.pageLogic.settings.mvc = mvc;
 						console.log('mvc'+mvc);
 					}
-				}    		
+				}
 	    		$scope.physiobuddyMVC.counter = $scope.physiobuddyMVC.state.count;
 	    	}
 	    	//Display Seconds countdown
@@ -136,11 +136,11 @@
        		// physiobuddyCalibratePlot.addText($scope.physiobuddyMVC.msg);
 	    };
 
-    	/* Step 2 : Calibrate Brace 
+    	/* Step 2 : Calibrate Brace
 			- display images
 			- d3 animate
-			- start recording data 
-	    	- cancel recording data 
+			- start recording data
+	    	- cancel recording data
 	    	- process data
 	    	- set new MVC
 	    	- show progress bar

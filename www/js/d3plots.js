@@ -247,11 +247,11 @@ angular.module('flexvolt.d3plots', [])
 })
 
 .factory('physiobuddyCalibratePlot', function () {
-
+  return 0;
 })
 
 .factory('physiobuddyExercisePlot', function () {
-
+  return 0;
 })
 
 .factory('xyDot', function() {
