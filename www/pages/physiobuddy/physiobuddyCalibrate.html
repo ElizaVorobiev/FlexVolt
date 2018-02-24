@@ -1,4 +1,4 @@
-<ion-view title="Physiobuddy">
+<ion-view title="Calibration">
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
         <save-panel ng-if="!mobile"></save-panel>
@@ -8,12 +8,17 @@
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
     </ion-nav-buttons>
-  <ion-content class="has-header fv-theme" scroll="false">
+  <ion-content class="has-header fv-theme-calibrate" scroll="false">
     <!-- <not-connected></not-connected> -->
-    <h1> Calibrate MVC</h1>
-    <p>Insert text here</p>
+   <div class = "calibrate-content"> 
+    <h1> Step 2: Calibrate Your Brace</h1>
+    <p>Press "Start Recording" and push the injured knee to the ground as shown below. The recording will automatically stop after 5 seconds. </p>
     <div id = "physiobuddyCalibrateWindow">animations should go here</div>
     <button ng-click = "setMVC()">StartRecording</button>
     <button ui-sref = "physiobuddyCalibrated">Calibrated</button>
+
+   </div>
+
+  
   </ion-content>
 </ion-view>
