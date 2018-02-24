@@ -26,8 +26,6 @@
     <plugin name="cordova-plugin-ble-central" spec="~1.1.4">
         <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="This app would like to scan for a FlexVolt sensor." />
     </plugin>
-    <engine name="ios" spec="~4.3.1" />
-    <engine name="android" spec="~6.1.2" />
     <platform name="android">
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -84,4 +82,6 @@
     <plugin name="cordova-plugin-statusbar" spec="~2.2.3" />
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.3" />
+    <engine name="ios" spec="~4.3.1" />
+    <engine name="android" spec="~6.1.2" />
 </widget>
