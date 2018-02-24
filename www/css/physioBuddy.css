@@ -110,5 +110,15 @@
   align-items: center;
 }
 
+.step-completed {
+  vertical-align: middle;
+}
+
+.step-completed img {
+  width: 5%; 
+  margin-right: 5px; 
+  position: relative; 
+  top:3px
+}
 
 /* EXERCISE PAGE */
