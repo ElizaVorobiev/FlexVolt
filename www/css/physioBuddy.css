@@ -6,6 +6,7 @@
     color: #000; }
     .bar.bar-balanced .title {
       color: #000; }
+
 .nav-bar-block {
   position: left;
   top: 0;
@@ -13,21 +14,44 @@
   left: 0;
   z-index: 9; }
 
+/* blue background of calibration flow */
 .fv-theme-calibrate {
   background-color: #3498DB; }
 
-/* White part of the calibration page */
- .calibrate-content {
- 	background-color: #FFFFFF;
- 	position: absolute;
- 	width: 80%;
-  	height: 75%;
-  	left: 50%;
-  	top: 50%;
-  	padding: 20px;
- }
+/* white card styling */
+.card {
+margin: 8% 13% 8% 13% ;
+padding-top: 5%;
+padding-bottom: 1%;
+padding-left: 8%;
+padding-right: 8%;
+box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  }
 
+
+/* Step colours for calibration flow */
 .calibrate-content-title{
-
-
+ color: #2980B9; 
+ text-align:center;
 }
+
+.calibrate-content-instructions{
+	 color: #000; 
+	 padding: 20;
+	 margin-top: 3%;
+}
+
+.calibrate-content-graph{
+	margin: 10%;
+}
+
+.calibrate-content-countdown{
+	margin: 10%;
+}
+
+.calibrate-content-pictures{
+		background-color: #F2F2F2;
+		background-color-opacity: 20%;
+}
+
+
