@@ -1,19 +1,40 @@
 <ion-view title="Physiobuddy">
+    
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
         <save-panel ng-if="!mobile"></save-panel>
     </ion-nav-buttons>
+
     <ion-nav-buttons side="right">
         <connection-status></connection-status>
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
     </ion-nav-buttons>
-  <ion-content class="has-header fv-theme" scroll="false">
+
+    <ion-content class="has-header fv-theme-exercise" scroll="false">
     <!-- <not-connected></not-connected> -->
-    <h1> Flat Knee Flex</h1>
-    <p>Insert text here</p>
-    <div id = "physiobuddyExerciseWindow">animations should go here</div>
+        <h2 class=  "calibrate-content-title">  Flat Knee Flex</h2>
+        <p>0/5 Repititions</p>
+        <p> Push harder to get in the green zone!</p>
+            <div id = "physiobuddyExerciseWindow">animations should go here</div>
     <button ng-click = "startExercise()">StartRecording</button>
     <button ui-sref = "physiobuddy">Home</button>
+  <div class = "calibrate-content-pictures"> 
+                <div class = "row">
+                        <div class = "col">
+                            <img src="\img\physioBuddy\starting-position.png" style = "width: 100%; height: 100%">
+                        </div>
+                        <div class = "col">
+                            <img src="\img\physioBuddy\arrow-icon.png" style = "width: 40%; height: auto; vertical-align: middle; margin:25%">
+                        </div>
+                        <div class = "col" >
+                            <img src="\img\physioBuddy\ending-position.png" style = "width: 100%; height: 100%">
+                        </div>
+                </div>
+
+            </div>
+
+
+
   </ion-content>
 </ion-view>
