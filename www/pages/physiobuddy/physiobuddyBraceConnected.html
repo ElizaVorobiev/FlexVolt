@@ -1,4 +1,4 @@
-<ion-view title="Physiobuddy">
+<ion-view title="Calibration">
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
         <save-panel ng-if="!mobile"></save-panel>
@@ -8,11 +8,22 @@
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
     </ion-nav-buttons>
-  <ion-content class="has-header fv-theme" scroll="false">
-    
-    <!-- <not-connected></not-connected> -->
-    <h1> Brace Connected</h1>
-    <p>Insert text here</p>
-    <button ui-sref = "physiobuddyCalibrate">Calibrate</button>
+
+  <ion-content class="has-header fv-theme-calibrate" scroll="false">
+    <div class = "card">
+        <div>
+            <h3 class  = "calibrate-content-title-complete"> Step 1: Complete</h3>
+        </div>
+        <div>
+            <p class  = "calibrate-content-instructions"> Your knee brace is now connected. You have <strong>1 exercise</strong> to do today called the:</p>
+        </div>
+        <div style="margin-top: 30px" class="item-image">
+            <p>Flat Knee Flex</p>
+            <img src="\img\physioBuddy\starting-position.png" style="width: 35%;">
+        </div>
+        </br>
+        <button ui-sref = "physiobuddyCalibrate", class = "button">Next</button>
+    </div>
   </ion-content>
+
 </ion-view>

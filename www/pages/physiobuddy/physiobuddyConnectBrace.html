@@ -1,5 +1,4 @@
 <ion-view title="Calibration">
-
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
         <save-panel ng-if="!mobile"></save-panel>
@@ -9,12 +8,11 @@
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
     </ion-nav-buttons>
+
     <ion-content class="has-header fv-theme-calibrate" scroll="false">
         <div class = "card">
             <div><h3 class  = "calibrate-content-title"> Step 1: Connect Your Brace </h3></div>
-            <div>
-                <p class  = "calibrate-content-instructions"> Place the brace on your knee and turn on the bluetooth receiver on both the band and your device. </br></br> The next step will be to calibrate the brace for today’s exercise.</p>
-            </div>
+            <div><p class  = "calibrate-content-instructions"> Place the brace on your knee and turn on the bluetooth receiver on both the band and your device. </br></br> The next step will be to calibrate the brace for today’s exercise.</p></div>
             <ion-grid id="bluetooth-animation">
                 <ion-row>
                     <ion-col><img src="\img\physioBuddy\knee-icon.png"></ion-col>
@@ -23,7 +21,8 @@
                 </ion-row>
             </ion-grid>
         </br>
-            <button ui-sref = "physiobuddyBraceConnected", class = "calibrate-content-button">Brace Connected</button>
+            <button ui-sref = "physiobuddyBraceConnected", class = "button">Brace Connected</button>
         </div>
   </ion-content>
+
 </ion-view>
