@@ -180,7 +180,7 @@
 	        }
 
 	        dataOut = dataIn[0];
-	        console.log(dataOut);
+	        // console.log(dataOut);
 
 	        // physiobuddyCalibratePlot.update(dataOut);
    		};
@@ -208,7 +208,6 @@
 	                for (var i= 0; i < physiobuddyLogic.settings.filters.length; i++){
 	                    dataHandler.addFilter(physiobuddyLogic.settings.filters[i]);
 	                }
-	    //            dataHandler.setMetrics(60);
 	                // physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax, updateTargets);
 	                paintStep();
 	            });

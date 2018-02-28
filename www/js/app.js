@@ -184,8 +184,8 @@
             url: '/myometer:demo',
             templateUrl: 'pages/myometer/myometer.html',
             controller: 'MyometerCtrl',
-            onEnter: dataOn,
-            onExit: exitFunction
+            // onEnter: dataOn,
+            // onExit: exitFunction
         })
 
         .state('physiobuddy', {
@@ -199,15 +199,15 @@
             url: '/physiobuddyConnectBrace',
             templateUrl: 'pages/physiobuddy/physiobuddyConnectBrace.html',
             controller: 'PhysiobuddyCtrl',
-            onEnter: dataOn,
-            onExit: exitFunction
+            // onEnter: dataOn,
+            // onExit: exitFunction
         })
         .state('physiobuddyBraceConnected', {
             url: '/physiobuddyBraceConnected',
             templateUrl: 'pages/physiobuddy/physiobuddyBraceConnected.html',
             controller: 'PhysiobuddyCtrl',
-            onEnter: dataOn,
-            onExit: exitFunction
+            // onEnter: dataOn,
+            // onExit: exitFunction
         })
         .state('physiobuddyCalibrate', {
             url: '/physiobuddyCalibrate',
@@ -220,8 +220,8 @@
             url: '/physiobuddyCalibrated',
             templateUrl: 'pages/physiobuddy/physiobuddyCalibrated.html',
             controller: 'PhysiobuddyCtrl',
-            onEnter: dataOn,
-            onExit: exitFunction
+            // onEnter: dataOn,
+            // onExit: exitFunction
         })
         .state('physiobuddyExercise', {
             url: '/physiobuddyExercise',
