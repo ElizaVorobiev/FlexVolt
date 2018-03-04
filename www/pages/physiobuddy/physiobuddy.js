@@ -6,8 +6,6 @@
     .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'customPopover',
     function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, dataHandler, hardwareLogic, customPopover) {
       
-		customPopover.add($ionicPopover, $scope, 'popover', 'pages/physiobuddy/physiobuddyExercise.html', physiobuddy.updateSettings);
-		customPopover.add($ionicPopover, $scope, 'filterpopover', 'templates/filter-popover.html', myometerLogic.updateSettings);
 
     	/* Physiobuddy home 
 			- display some info about user (todo:later)
