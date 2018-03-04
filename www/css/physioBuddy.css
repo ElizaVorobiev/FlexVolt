@@ -40,9 +40,6 @@
   background-color: #3498DB; 
 }
 
-.fv-theme-exercise{
-  background-color: #FFFFFF;
-}
 
 /* white card styling */
 .card {
@@ -123,3 +120,40 @@
 }
 
 /* EXERCISE PAGE */
+
+.fv-theme-exercise{
+  background-color: #FFFFFF;
+}
+
+.exercise-content{
+padding: 5%;
+
+}
+.exercise-content-title{
+ color: #2980B9; 
+ text-align:center;
+ font-family: Open Sans;
+}
+
+.exercise-content-instructions{
+  color: #000; 
+  margin-top: 3%;
+  text-align: center;
+}
+
+.exercise-content-graph{
+  margin: 10%;
+  padding: 20;
+  margin-top: 3%;
+  text-align: center;
+}
+
+.button-exercise{
+  background: #3498db;
+  border-radius: 28px;
+  border-color: 2A9FD8;
+  border-width: 1px;
+  color: #ffffff;
+  font-size: 100%;
+  text-align: center;
+}
