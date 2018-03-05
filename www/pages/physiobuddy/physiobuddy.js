@@ -3,9 +3,43 @@
 
 	angular.module('flexvolt.physiobuddy',[])
 
-    .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'customPopover',
-    function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, dataHandler, hardwareLogic, customPopover) {
-      
+    .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicPopover', '$ionicModal', '$interval', 'customPopover',
+    function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $setTimeout, $interval, dataHandler, hardwareLogic, customPopover) {
+
+ 
+   //Code for a popup
+   //  $scope.summaryPopup = function() {
+	
+   //    var promptPopup = $ionicPopup.prompt({
+   //       title: 'Flat Knee Flex',
+   //       template: 'Template text',
+   //       inputType: 'text',
+   //       inputPlaceholder: 'Placeholder'
+   //  	});
+        
+   //    promptPopup.then(function(res) {
+   //       console.log(res);
+   //    });	
+   // };
+
+   // Modal for PhysiobuddyExercise
+    $ionicModal.fromTemplateUrl('/pages/physiobuddy/physiobuddyExercise-modal.html', {
+    	scope: $scope
+    }).then(function(modal) {
+    	$scope.modal = modal;
+    });
+	$scope.openModal = function() { 
+		$scope.modal.show()
+	};
+	$scope.closeModal = function() {    
+		$scope.modal.hide();
+		clearTimeout();
+	};
+	//this makes the popup load on page
+	// $setTimeout(function(){
+ //    	$scope.openModal();
+ //  	});
+
 
     	/* Physiobuddy home 
 			- display some info about user (todo:later)

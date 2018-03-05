@@ -93,9 +93,9 @@
 
 .button{
   background: #3498db;
-  border-radius: 28px;
-  border-color: 2A9FD8;
-  border-width: 1px;
+  border-radius: 20px;
+  border-color: #2A9FD8;
+  border-width: 2px;
   color: #ffffff;
   font-size: 100%;
   text-align: center;
@@ -125,18 +125,37 @@
   background-color: #FFFFFF;
 }
 
+.modal-title{
+ color: #d35501; 
+ text-align:center;
+ margin-bottom: 30px;
+}
+
+.scroll-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: auto;
+  height: auto; 
+}
+
 .exercise-content{
 padding: 5%;
 
 }
 .exercise-content-title{
  color: #2980B9; 
- text-align:center;
+ text-align: center;
  font-family: Open Sans;
 }
 
 .exercise-content-instructions{
-  color: #000; 
+  color: #2C3E50; 
   margin-top: 3%;
   text-align: center;
 }
@@ -150,10 +169,23 @@ padding: 5%;
 
 .button-exercise{
   background: #3498db;
-  border-radius: 28px;
-  border-color: 2A9FD8;
-  border-width: 1px;
+  border-radius: 20px;
+  border-color: #2A9FD8;
+  border-width: 2px;
+  color: #ffffff;
+  font-size: 100%;
+  padding: 3px 12px;
+  text-align: center;
+}
+
+.button-modal{
+  background: #E67E22;
+  border-radius: 20px;
+  border-color: #D35400;
+  border-width: 2px;
   color: #ffffff;
   font-size: 100%;
   text-align: center;
+  padding: 5px 20px;
+  vertical-align: middle;
 }
