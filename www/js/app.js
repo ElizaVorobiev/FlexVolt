@@ -192,8 +192,8 @@
             url: '/physiobuddy',
             templateUrl: 'pages/physiobuddy/physiobuddy.html',
             controller: 'PhysiobuddyCtrl',
-            onEnter: dataOn,
-            onExit: exitFunction
+            // onEnter: dataOn,
+            // onExit: exitFunction
         })
         .state('physiobuddyConnectBrace', {
             url: '/physiobuddyConnectBrace',
@@ -213,7 +213,7 @@
             url: '/physiobuddyCalibrate',
             templateUrl: 'pages/physiobuddy/physiobuddyCalibrate.html',
             controller: 'PhysiobuddyCalibrateCtrl',
-            onEnter: dataOn,
+            // onEnter: dataOn,
             onExit: exitFunction
         })
         .state('physiobuddyCalibrated', {

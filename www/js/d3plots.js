@@ -247,7 +247,153 @@ angular.module('flexvolt.d3plots', [])
 })
 
 .factory('physiobuddyCalibratePlot', function () {
-  return 0;
+   var mar, margin, width, height, plotElement, barMax, x;
+    mar = 10;
+    margin = {top: mar, right: mar, bottom: mar, left: 70};
+    var headerPadding = 45;
+    var footerPadding = 160;
+    // width = window.innerWidth - margin.left - margin.right,
+    // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
+    width = window.innerWidth - margin.left - margin.right,
+    height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
+    var yMax;
+
+    var svg, xScale, xAxis, yScale, yAxis, data = [], bar, yLabel;
+    var textLabel = undefined;
+    // var updateTargets;
+    // var yTicks = [0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5];
+
+    var api = {
+      init:undefined,
+      reset:undefined,
+      resize:undefined,
+      update:undefined,
+      settings:undefined,
+      addText: undefined,
+      removeText: undefined
+    };
+
+    data = [0.9]
+    api.reset = function(){
+        if (svg){
+          d3.select('svg').remove();
+        }
+        svg = d3.select(plotElement).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        xScale = d3.scale.linear()
+            .range([0, width])
+            .domain([0, barMax]);
+        
+        svg.selectAll("rect") // this is what actually creates the bars
+          .data(data)
+        .enter().append("rect")
+          .attr("width", barMax)
+          .attr("height", 20)
+          .attr("rx", 5) // rounded corners
+          .attr("ry", 5);
+          
+        // svg.selectAll("text") // adding the text labels to the bar
+        //   .data(data)
+        // .enter().append("text")
+        //   .attr("x", x)
+        //   .attr("y", 10) // y position of the text inside bar
+        //   .attr("dx", -3) // padding-right
+        //   .attr("dy", ".35em") // vertical-align: middle
+        //   .attr("text-anchor", "end") // text-align: right
+        //   .text(String);
+
+
+    };
+    api.update = function(dataIn){
+
+      // for (var k = 0; k < api.settings.nChannels; k++){
+      //   data[k].value = Math.max(0,dataIn[k]); // adjusting to actual
+      // }
+      var dataMax = Math.max(5, Math.max(...dataIn)*1000);//temporarly give large value
+      data =[dataMax]
+      svg.selectAll('rect').remove();
+      svg.selectAll('bars')
+        .data(data)
+        .enter()
+        .append('rect')
+        // .attr('x', function(d) {return xScale(d.x);})
+        // .attr('y', width})
+        .attr('width', function(d) {return d})
+        // .attr('height', function(d) {return height-yScale(d.value);})
+        .attr("height", 20)
+        .attr("rx", 5) // rounded corners
+        .attr("ry", 5);
+
+        // svg.selectAll('text').remove();
+        // svg.selectAll("text") // adding the text labels to the bar
+        //   .data(data)
+        // .enter().append("text")
+        //   .attr("x", function(d) {return d})
+        //   .attr("y", 10) // y position of the text inside bar
+        //   .attr("dx", -3) // padding-right
+        //   .attr("dy", ".35em") // vertical-align: middle
+        //   .attr("text-anchor", "end") // text-align: right
+        //   .text(String);
+
+
+        if (textLabel){
+          d3.select('#mvcPrompt').remove();
+          svg.append('text')
+            .attr('id','mvcPrompt')
+            .attr('x', width/2)
+            .attr('y', margin.top+height/2)
+            .text(textLabel)
+            .attr('fill','black')
+            .attr('text-anchor', 'middle')
+            .style('font', '16px Helvetica');
+        }
+
+    }
+
+    api.addText = function(text){
+      d3.select('#mvcPrompt').remove();
+      textLabel = text;
+    };
+
+    api.removeText = function(){
+      d3.select('#mvcPrompt').remove();
+      textLabel = undefined;
+    };
+   
+    api.init = function(element, settings, vMax){
+        plotElement = element;
+        barMax = vMax;
+        // width = window.innerWidth - margin.left - margin.right,
+        // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
+        width = window.innerWidth - margin.left - margin.right,
+        height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
+        api.settings = settings;
+        api.reset();
+    }
+
+    api.afterMVC = function(){
+      if (svg){
+          d3.select('svg').remove();
+      }
+      api.addText('Your MVC has been calculated :)');
+      
+    };
+
+
+    api.resize = function(){
+        console.log('DEBUG: plot resized');
+        width = window.innerWidth - margin.left - margin.right,
+        height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
+
+        api.reset();
+    };
+
+  return api;
 })
 
 .factory('physiobuddyExercisePlot', function () {

@@ -3,10 +3,13 @@
 
 	angular.module('flexvolt.physiobuddy',[])
 
-    .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'myometerPlot', 'myometerLogic', 'dataHandler', 'hardwareLogic', 'customPopover',
-    function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, myometerPlot, myometerLogic, dataHandler, hardwareLogic, customPopover) {
+    .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'physiobuddyLogic', 'dataHandler', 'hardwareLogic', 'customPopover',
+    function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, physiobuddyLogic, dataHandler, hardwareLogic, customPopover) {
 
-
+    	// var temp;
+    	var afID;
+    	var frameCounts = 0;
+    	var currentUrl = $state.current.url;
     	/* Physiobuddy home
 			- display some info about user (todo:later)
 			- button that says do my exercises
@@ -33,9 +36,26 @@
 			- need some soft of timer function/ display seconds countdown
     	*/
     	//function called when user clicks start exercise
-    	$scope.startExercise = function(){
+    	function startExercise(){
 
     	};
+
+    	function init() {
+	        if($state.current.url === currentUrl){
+	          physiobuddyLogic.ready()
+	            .then(function(){
+	                physiobuddyLogic.settings.nChannels = Math.min(physiobuddyLogic.settings.nChannels,hardwareLogic.settings.nChannels);
+	                dataHandler.init(physiobuddyLogic.settings.nChannels);
+	                for (var i= 0; i < physiobuddyLogic.settings.filters.length; i++){
+	                    dataHandler.addFilter(physiobuddyLogic.settings.filters[i]);
+	                }
+	                // physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax);
+	                // paintStep();
+	                // temp = $scope;
+	            });
+	        }
+	      }
+
 
     	/*
 			Data processing function
@@ -50,7 +70,7 @@
     	*/
 
 
-      //init();
+      init();
     }])
 
     /* Step 2 : Calibrate Brace
@@ -110,6 +130,15 @@
 	    $scope.updating = false;
 	    $scope.calibrating = false;
 
+	    //Once MVC is calculated leave the page and pass on the MVC value
+	    function mvcCalculated(mvc){
+			//clear the chart
+			//physiobuddyCalibratePlot.afterMVC();
+			//turn data off
+			flexvolt.api.turnDataOff();
+			$state.go('physiobuddyCalibrated',{mvcCalculated : mvc})
+	    };
+
 	    //realtime processing data, called every second
 	    function mvcProcessor(){
 	    	if ($scope.physiobuddyMVC.counter > 0){
@@ -129,13 +158,14 @@
 						$scope.pageLogic.settings.mvc = mvc;
 						console.log('mvc'+mvc);
 					}
+					mvcCalculated(mvc);
 				}
 	    		$scope.physiobuddyMVC.counter = $scope.physiobuddyMVC.state.count;
 	    	}
 	    	//Display Seconds countdown
 	    	$scope.physiobuddyMVC.msg = $scope.physiobuddyMVC.state.msg.replace('XT',''+$scope.physiobuddyMVC.counter);
-	    	console.log('calibrate counter' + $scope.physiobuddyMVC.msg);
-       		// physiobuddyCalibratePlot.addText($scope.physiobuddyMVC.msg);
+	    	// console.log('calibrate counter' + $scope.physiobuddyMVC.msg);
+       		physiobuddyCalibratePlot.addText($scope.physiobuddyMVC.msg);
 	    };
 
     	/* Step 2 : Calibrate Brace
@@ -151,12 +181,13 @@
     	*/
     	//function called when the user clicks start recording on Calibrate your brace page
     	$scope.setMVC = function(chan){
+    		flexvolt.api.turnDataOn();
        	 	$scope.calibrating = true;
         	$scope.physiobuddyMVC.channel = 0;
         	$scope.physiobuddyMVC.state = states.getReady;
 	        $scope.physiobuddyMVC.counter = $scope.physiobuddyMVC.state.count;
 	        $scope.physiobuddyMVC.msg = $scope.physiobuddyMVC.state.msg.replace('XT',''+$scope.physiobuddyMVC.counter);
-	        // physiobuddyCalibratePlot.addText($scope.physiobuddyMVC.msg);
+	        physiobuddyCalibratePlot.addText($scope.physiobuddyMVC.msg);
 	        console.log('setMVC' + $scope.physiobuddyMVC.msg);
 	        stateInterval = $interval(mvcProcessor,1000);
     	};
@@ -182,7 +213,7 @@
 	        dataOut = dataIn[0];
 	        // console.log(dataOut);
 
-	        // physiobuddyCalibratePlot.update(dataOut);
+	        physiobuddyCalibratePlot.update(dataOut);
    		};
 
 	    function paintStep(){
@@ -208,7 +239,7 @@
 	                for (var i= 0; i < physiobuddyLogic.settings.filters.length; i++){
 	                    dataHandler.addFilter(physiobuddyLogic.settings.filters[i]);
 	                }
-	                // physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax, updateTargets);
+	                physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax);
 	                paintStep();
 	            });
 	        }
@@ -220,7 +251,7 @@
 	          }
 	          afID = undefined;
 	          $scope.updating  = true;
-	          // physiobuddyCalibratePlot.resize();
+	          physiobuddyCalibratePlot.resize();
 	          $scope.updating  = false;
 	          paintStep();
 	    };

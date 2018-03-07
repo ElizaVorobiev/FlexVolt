@@ -165,3 +165,29 @@ i.record-icon{
   background: #002f53;
   -webkit-transition: width 0.8s, height 0.8s, -webkit-transform 0.8s; /* Safari */
 }
+
+/*Physiobuddy CSS  for d3 */
+.physioCalibrate .svg rect:first-of-type {
+  color: #fff;
+  stroke: #3994b6;
+  fill: white;
+}
+
+.physioCalibrate text:first-of-type {
+  fill: #3994b6;
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+.physioCalibrate .svg rect:nth-of-type(2) {
+  color: #fff;
+  stroke: transparent;
+  fill: #3994b6;
+}
+
+.physioCalibrate text:nth-of-type(2) {
+  fill: #a8d4e4;
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
