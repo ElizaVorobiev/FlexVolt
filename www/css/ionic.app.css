@@ -4149,7 +4149,7 @@ a.subdued {
       background-image: linear-gradient(180deg, #111, #111 50%, transparent 50%); }
   .bar .title {
     display: block;
-    position: left;
+    position: absolute;
     top: 0;
     right: 0;
     left: 0;
@@ -4170,7 +4170,8 @@ a.subdued {
     .bar .title.title-right {
       text-align: right; }
   .bar .title a {
-    color: inherit; }
+    color: inherit; 
+    left:0px;}
   .bar .button, .bar button {
     z-index: 1;
     padding: 0 8px;
