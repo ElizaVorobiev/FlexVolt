@@ -10,6 +10,7 @@
     	var afID;
     	var frameCounts = 0;
     	var currentUrl = $state.current.url;
+	    var calculatedMvc = physiobuddyLogic.settings.mvc
     	/* Physiobuddy home
 			- display some info about user (todo:later)
 			- button that says do my exercises
@@ -51,7 +52,6 @@
 	                }
 	                // physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax);
 	                // paintStep();
-	                // temp = $scope;
 	            });
 	        }
 	      }
@@ -134,7 +134,8 @@
 	    function mvcCalculated(mvc){
 			//clear the chart
 			//physiobuddyCalibratePlot.afterMVC();
-			//turn data off
+			//turn data off and set MVC 
+			physiobuddyLogic.settings.mvc = mvc;
 			flexvolt.api.turnDataOff();
 			$state.go('physiobuddyCalibrated',{mvcCalculated : mvc})
 	    };
