@@ -43,36 +43,36 @@
 
 /* white card styling */
 .card {
-  margin: 8% 13% 8% 13%;
-  padding-top: 5%;
-  padding-bottom: 3%;
-  padding-left: 8%;
-  padding-right: 8%;
+  margin: 7% 13% 7% 13%;
+  padding: 5% 8%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   max-width: 75%;
-  max-height: 75%;
+  max-height: 80%;
 }
 
 /* Step colours for calibration flow */
 .calibrate-content-title{
  color: #2980B9; 
  text-align:center;
- font-family: Open Sans;}
+ font-weight: 400;
+}
 
  .calibrate-content-title-complete{
  color: #27AE60; 
  text-align:center;
- font-family: Open Sans;}
+ font-weight: 400;
+}
 
 
-.calibrate-content-instructions{
-  color: #000; 
-  padding: 20;
+.calibrate-content-instructions{ 
+  padding: 20px;
+  margin-bottom: 10px;
   text-align: center;
+  color: #243342;
 }
 
 .calibrate-content-graph{
-	margin: 5%;
+	margin: 2%;
 }
 
 .calibrate-content-countdown{
@@ -82,9 +82,10 @@
 .calibrate-content-pictures{
 		background-color: #F2F2F2;
 		background-color-opacity: 20%;
-    margin-left: -13%;
-    margin-right: -13%;
-    height: 20%;
+    margin-left: -15%;
+    margin-right: -15%;
+    height: 15%;
+    padding: 15px 50px
    /* padding-bottom:-10%;*/
 
 }
@@ -93,9 +94,12 @@
   left:0px;
 }
 
+#bold-text {
+  font-weight: 500;
+  color: 
+}
 
 .calibrate-content-button{
-  margin:2%;
   text-align: center;
 }
 
@@ -121,7 +125,7 @@
 }
 
 .step-completed img {
-  width: 5%; 
+  width: 4%; 
   margin-right: 5px; 
   position: relative; 
   top:3px
@@ -147,13 +151,14 @@ padding: 5%;
 .exercise-content-title{
  color: #2980B9; 
  text-align: center;
- font-family: Open Sans;
+ font-weight: 400;
 }
 
-.exercise-content-instructions{
-  color: #2C3E50; 
+.exercise-content-instructions{ 
   margin-top: 3%;
   text-align: center;
+  color: #243342;
+  font-size: 16px
 }
 
 .exercise-content-graph{
