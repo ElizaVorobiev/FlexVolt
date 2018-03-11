@@ -35,6 +35,7 @@
     line-height: 44px; 
   }
 
+
 /* blue background of calibration flow */
 .fv-theme-calibrate {
   background-color: #3498DB; 
@@ -59,8 +60,9 @@
 }
 
 .card-footer {
-  background-color: #F2F2F2;
-  background-color-opacity: 20%;
+  background-color: #FFFFFF;
+  border-top: #F2F2F2;
+  border-style: solid;
   /*padding: 2% 5%;*/
   text-align: center;
 }

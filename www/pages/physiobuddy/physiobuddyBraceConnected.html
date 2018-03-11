@@ -1,9 +1,12 @@
 <ion-view title="Calibration">
+
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
         <save-panel ng-if="!mobile"></save-panel>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
+        <img src="\img\physioBuddy\check-icon.png" style = "height: 20px; margin-top: 7px;"><br>
+         <p style = "padding-top: 7px; color: #2980B9"> Brace Connected </p>
         <connection-status></connection-status>
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
@@ -17,11 +20,11 @@
                     <h3 class = "calibrate-content-title-complete"><img src="\img\physioBuddy\complete-icon.png"> Step 1: Complete</h3>
                 </div>
                 <div>
-                    <p class  = "calibrate-content-instructions"> The knee brace is now connected. You have <span id="bold-text">1 exercise</span> to do today called the:</p>
+                    <p class  = "calibrate-content-instructions"> The knee brace is now connected. <br>You have <span id="bold-text">1 exercise</span> to do today called the:</p><br><br>
                 </div>
                 <div style="margin-top: 10px" class="item-image">
                     <p style="color: #243342">Flat Knee Flex</p>
-                    <img src="\img\physioBuddy\starting-position.png" style="width: 35%;">
+                    <br><img src="\img\physioBuddy\starting-position.png" style="width: 35%;">
                 </div>
                 </br>
                 <div class="calibrate-content-button">

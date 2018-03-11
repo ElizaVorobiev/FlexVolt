@@ -4171,7 +4171,7 @@ a.subdued {
       text-align: right; }
   .bar .title a {
     color: inherit; 
-    left:0px;}
+  }
   .bar .button, .bar button {
     z-index: 1;
     padding: 0 8px;

@@ -4,6 +4,8 @@
         <save-panel ng-if="!mobile"></save-panel>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
+        <img src="\img\physioBuddy\check-icon.png" style = "height: 20px; margin-top: 7px;"><br>
+         <p style = "padding-top: 7px; color: #2980B9"> Brace Connected </p>
         <connection-status></connection-status>
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
@@ -21,18 +23,21 @@
                           <p class  = "calibrate-content-instructions">
                           Press "Start Recording" and push the injured knee to the ground as shown below. <br>The recording will automatically stop after 5 seconds. </p>
                     </div>
+                    <br>
                      <div id = "physiobuddyCalibrateWindow">
                        <p class = "calibrate-content-graph"> animations should go here </p>
                     </div>
                        <div id = "physiobuddyCalibrateWindow">
                        <p class = "calibrate-content-countdown"> 321 </p>
                     </div>
+                    <br><br>
                     <div class = "calibrate-content-button">
                         <button ng-click = "setMVC()", class = "button">StartRecording</button>
                          
                          <button ui-sref = "physiobuddyCalibrated", class = "button"calibrate-content-button" >Calibrated</button>
                     </div>
                 </div>
+                <br>
                 <div class="card-footer">
                     <div class = "row"> 
                         <div class="col" style="margin: auto;">

@@ -1,4 +1,4 @@
-<ion-view title="Physiobuddy" >
+<ion-view title="Exercise" >
     
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
@@ -6,6 +6,8 @@
     </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
+        <img src="\img\physioBuddy\check-icon.png" style = "height: 20px; margin-top: 7px;"><br>
+         <p style = "padding-top: 7px; color: #2980B9"> Brace Connected </p>
         <connection-status></connection-status>
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
@@ -22,12 +24,12 @@
            <div class = "row", style = "justify-content: center; align-items: center"> <p> Push harder to get in the green zone!</p></div>
 
             <div class = "row", style = "justify-content: center; align-items: center; height: 40%", id = "physiobuddyExerciseWindow" ><p>animations should go here</p></div>
-
+            <br><br><br>
             <div class="calibrate-content-button"><button  ng-click = "startExercise()", class = "button-exercise">Start Recording</button></div>
-
+            <br>
             <div class="calibrate-content-button"><button ui-sref = "physiobuddy", class = "button-exercise"> Home</button></div>
 
-            <div class = "row"> 
+            <div class = "row", style = "position: bottom"> 
                 <div class="col" style="margin: auto;">
                     <img src="\img\physioBuddy\starting-position.png" style="max-block-size:100px;display: block;margin: auto;">
                 </div>
