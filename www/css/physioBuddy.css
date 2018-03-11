@@ -40,14 +40,29 @@
   background-color: #3498DB; 
 }
 
+.card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 
 /* white card styling */
-.card {
-  margin: 7% 13% 7% 13%;
-  padding: 5% 8%;
+.card { 
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-  max-width: 75%;
-  max-height: 80%;
+  width: 75%;
+  height: 75%;
+}
+
+.card-content {
+  margin: 5% 8% 3% 8%;
+}
+
+.card-footer {
+  background-color: #F2F2F2;
+  background-color-opacity: 20%;
+  /*padding: 2% 5%;*/
+  text-align: center;
 }
 
 /* Step colours for calibration flow */
@@ -72,21 +87,15 @@
 }
 
 .calibrate-content-graph{
-	margin: 2%;
+  margin: 2%;
 }
 
 .calibrate-content-countdown{
-	margin: 5%;
+  margin: 2%;
 }
 
 .calibrate-content-pictures{
-		background-color: #F2F2F2;
-		background-color-opacity: 20%;
-    margin-left: -15%;
-    margin-right: -15%;
-    height: 15%;
-    padding: 15px 50px
-   /* padding-bottom:-10%;*/
+  text-align: center;
 
 }
 
@@ -141,8 +150,12 @@
  color: #d35501; 
  text-align:center;
  margin-bottom: 30px;
- padding-top: 10%;
+ padding-top: 5%;
 } 
+
+.modal-content{
+  margin: 5%;
+}
 
 .exercise-content{
 padding: 5%;

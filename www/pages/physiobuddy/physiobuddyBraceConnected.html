@@ -10,20 +10,24 @@
     </ion-nav-buttons>
 
   <ion-content class="has-header fv-theme-calibrate" scroll="false">
-    <div class = "card">
-        <div class="step-completed">
-            <h3 class = "calibrate-content-title-complete"><img src="\img\physioBuddy\complete-icon.png"> Step 1: Complete</h3>
-        </div>
-        <div>
-            <p class  = "calibrate-content-instructions"> The knee brace is now connected. You have <span id="bold-text">1 exercise</span> to do today called the:</p>
-        </div>
-        <div style="margin-top: 10px" class="item-image">
-            <p style="color: #243342">Flat Knee Flex</p>
-            <img src="\img\physioBuddy\starting-position.png" style="width: 35%;">
-        </div>
-        </br>
-        <div class="calibrate-content-button">
-            <button ui-sref = "physiobuddyCalibrate", class = "button">Next</button>
+    <div class="card-container">
+        <div class = "card">
+            <div class="card-content">
+                <div class="step-completed">
+                    <h3 class = "calibrate-content-title-complete"><img src="\img\physioBuddy\complete-icon.png"> Step 1: Complete</h3>
+                </div>
+                <div>
+                    <p class  = "calibrate-content-instructions"> The knee brace is now connected. You have <span id="bold-text">1 exercise</span> to do today called the:</p>
+                </div>
+                <div style="margin-top: 10px" class="item-image">
+                    <p style="color: #243342">Flat Knee Flex</p>
+                    <img src="\img\physioBuddy\starting-position.png" style="width: 35%;">
+                </div>
+                </br>
+                <div class="calibrate-content-button">
+                    <button ui-sref = "physiobuddyCalibrate", class = "button">Next</button>
+                </div>
+            </div>
         </div>
     </div>    
   </ion-content>
