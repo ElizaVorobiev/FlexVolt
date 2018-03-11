@@ -258,7 +258,7 @@ angular.module('flexvolt.d3plots', [])
     height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
     var yMax;
 
-    var svg, xScale, xAxis, yScale, yAxis, data = [], bar, yLabel;
+    var svg, xScale, xAxis, yScale, yAxis, data = [], barMax, yLabel;
     var textLabel = undefined;
     // var updateTargets;
     // var yTicks = [0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5];
@@ -388,7 +388,7 @@ angular.module('flexvolt.d3plots', [])
     api.resize = function(){
         console.log('DEBUG: plot resized');
         width = window.innerWidth - margin.left - margin.right,
-        height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
+        height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
 
         api.reset();
     };
@@ -397,7 +397,129 @@ angular.module('flexvolt.d3plots', [])
 })
 
 .factory('physiobuddyExercisePlot', function () {
-  return 0;
+  
+   var mar, margin, width, height, plotElement;
+    mar = 10;
+    margin = {top: mar, right: mar, bottom: mar, left: 70};
+    var headerPadding = 45;
+    var footerPadding = 160;
+    // width = window.innerWidth - margin.left - margin.right,
+    // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
+    width = window.innerWidth - margin.left - margin.right,
+    height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
+    var yMax;
+
+    var svg, xScale, xAxis, yScale, yAxis, data = [], barMax, yLabel;
+    var textLabel = undefined;
+
+  var api = {
+    init:undefined,
+    reset:undefined,
+    resize:undefined,
+    update:undefined,
+    settings:undefined,
+    addText: undefined,
+    removeText: undefined
+  };
+
+  
+  api.reset = function(){
+      if (svg){
+        d3.select('svg').remove();
+      }
+      svg = d3.select(plotElement).append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+      xScale = d3.scale.linear()
+          .range([0, width])
+          .domain([0, barMax]);
+      
+      svg.selectAll("rect") // this is what actually creates the bars
+        .data(data)
+      .enter().append("rect")
+        .attr("width", barMax)
+        .attr("height", 20)
+        .attr("rx", 5) // rounded corners
+        .attr("ry", 5);
+        
+  };
+
+  api.update = function(dataIn){
+
+    // for (var k = 0; k < api.settings.nChannels; k++){
+    //   data[k].value = Math.max(0,dataIn[k]); // adjusting to actual
+    // }
+  
+    svg.selectAll('rect').remove();
+    svg.selectAll('bars')
+      .data(dataIn)
+      .enter()
+      .append('rect')
+      // .attr('x', function(d) {return xScale(d.x);})
+      // .attr('y', width})
+      .attr('width', function(d) {return d})
+      // .attr('height', function(d) {return height-yScale(d.value);})
+      .attr("height", 20)
+      .attr("rx", 5) // rounded corners
+      .attr("ry", 5);
+
+
+
+      if (textLabel){
+        d3.select('#exercisePrompt').remove();
+        svg.append('text')
+          .attr('id','exercisePrompt')
+          .attr('x', width/2)
+          .attr('y', margin.top+height/2)
+          .text(textLabel)
+          .attr('fill','black')
+          .attr('text-anchor', 'middle')
+          .style('font', '16px Helvetica');
+      }
+
+  }
+
+  api.addText = function(text){
+    d3.select('#exercisePrompt').remove();
+    textLabel = text;
+  };
+
+  api.removeText = function(){
+    d3.select('#exercisePrompt').remove();
+    textLabel = undefined;
+  };
+
+  api.init = function(element, settings, vMax){
+      plotElement = element;
+      // width = window.innerWidth - margin.left - margin.right,
+      // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
+      width = window.innerWidth - margin.left - margin.right,
+      height = 600 - margin.top - headerPadding - margin.bottom - footerPadding;
+      api.settings = settings;
+      barMax =  settings.xMax;
+      api.reset();
+  }
+
+  api.doneExercise = function(){
+    if (svg){
+        d3.select('svg').remove();
+    }
+    api.addText('Congratulations you have finished your exercise!');
+  };
+
+  api.resize = function(){
+      console.log('DEBUG: plot resized');
+      width = window.innerWidth - margin.left - margin.right,
+      height = 600 - margin.top - headerPadding - margin.bottom - footerPadding;
+
+      api.reset();
+  };
+
+  return api;
 })
 
 .factory('xyDot', function() {

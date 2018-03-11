@@ -419,6 +419,7 @@ angular.module('flexvolt.taskLogic', [])
         filters:[],
         xMax: 20,
         mvc: 0,
+        percentMVC:60,
         labels: []
     };
 

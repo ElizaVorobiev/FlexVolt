@@ -191,21 +191,21 @@
         .state('physiobuddy', {
             url: '/physiobuddy',
             templateUrl: 'pages/physiobuddy/physiobuddy.html',
-            controller: 'PhysiobuddyCtrl',
+            // controller: 'PhysiobuddyCtrl',
             // onEnter: dataOn,
             // onExit: exitFunction
         })
         .state('physiobuddyConnectBrace', {
             url: '/physiobuddyConnectBrace',
             templateUrl: 'pages/physiobuddy/physiobuddyConnectBrace.html',
-            controller: 'PhysiobuddyCtrl',
+            // controller: 'PhysiobuddyCtrl',
             // onEnter: dataOn,
             // onExit: exitFunction
         })
         .state('physiobuddyBraceConnected', {
             url: '/physiobuddyBraceConnected',
             templateUrl: 'pages/physiobuddy/physiobuddyBraceConnected.html',
-            controller: 'PhysiobuddyCtrl',
+            // controller: 'PhysiobuddyCtrl',
             // onEnter: dataOn,
             // onExit: exitFunction
         })
@@ -219,7 +219,7 @@
         .state('physiobuddyCalibrated', {
             url: '/physiobuddyCalibrated',
             templateUrl: 'pages/physiobuddy/physiobuddyCalibrated.html',
-            controller: 'PhysiobuddyCtrl',
+            // controller: 'PhysiobuddyCtrl',
             // onEnter: dataOn,
             // onExit: exitFunction
         })
@@ -227,7 +227,7 @@
             url: '/physiobuddyExercise',
             templateUrl: 'pages/physiobuddy/physiobuddyExercise.html',
             controller: 'PhysiobuddyCtrl',
-            onEnter: dataOn,
+            // onEnter: dataOn,
             onExit: exitFunction
         })
 

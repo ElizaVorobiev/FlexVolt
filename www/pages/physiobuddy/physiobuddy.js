@@ -3,43 +3,156 @@
 
 	angular.module('flexvolt.physiobuddy',[])
 
-    .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'physiobuddyLogic', 'dataHandler', 'hardwareLogic', 'customPopover',
-    function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, physiobuddyLogic, dataHandler, hardwareLogic, customPopover) {
+    .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'physiobuddyLogic', 'physiobuddyExercisePlot', 'dataHandler', 'hardwareLogic', 'customPopover',
+    function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, physiobuddyLogic, physiobuddyExercisePlot, dataHandler, hardwareLogic, customPopover) {
 
     	// var temp;
     	var afID;
     	var frameCounts = 0;
     	var currentUrl = $state.current.url;
-	    var calculatedMvc = physiobuddyLogic.settings.mvc
-    	/* Physiobuddy home
-			- display some info about user (todo:later)
-			- button that says do my exercises
-    	*/
+	    var calculatedMvc = physiobuddyLogic.settings.mvc;
+	    $scope.pageLogic = physiobuddyLogic;
+	    var exerciseData = [], percentMVC = 60, stateInterval;
+	    var atMVC = false, heldAtMVC = 0, mvcMiss = 0;
+      	
+      	var states = {
+	        getReady: {
+	          name: 'ready',
+	          msg: 'Get ready to start flexing in XT s!',
+	          count: 3,
+	          nextState: 'measuring'
+	        },
+	        measuring: {
+	          name: 'measuring',
+	          msg: '',
+	          count: 60,
+	          nextState: 'timeout'
+	        },
+	        results: {
+	          name: 'timeout',
+	          msg: 'Nice try! Take a break and then try again',
+	          count: 0,
+	          nextState: 'idle'
+	        },
+	        idle: {
+	          name: 'idle',
+	          msg: '',
+	          nextState: 'idle'
+	        }
+      	};
 
-    	/* Step 1a : Connect Brace --> Maybe we skip this one for now?
-			- check that connected
-			- switch template
-    	*/
+      	$scope.physiobuddyExercise = {
+      		state: states.idle,
+      		msg:'',
+      		counter: 0,
+      		channel: 0,
+      	};
 
-    	/* Step 1b : Brace is Connected
-			- show picture of exercise
-			- Button to calibrate - takes you to next step
-    	*/
+    	//realtime processing data, called every second
+	    function exerciseProcessor(){
+	    	if ($scope.physiobuddyExercise.counter > 0){
+	    		$scope.physiobuddyExercise.counter--;
+	    		//decrement counter, this works as a countdown since only fired every 1s
+	    	} else {
+	    		//get next state
+	    		$scope.physiobuddyExercise.state = states[$scope.physiobuddyExercise.state.nextState];
 
-    	/* Step 3 : do exercise
-			- start looking at data right away?
-			- process data
-				- display counter ( js)
-				- display visual feedback (d3)
-			- popover for rest time
-			- popover for countdown for get ready
-			- popover for completion and take to home
-			- need some soft of timer function/ display seconds countdown
-    	*/
+				if ($scope.physiobuddyExercise.state.name === 'measuring'){
+					//clear everything before starting to measure
+					atMVC = false;
+					mvcMiss = 0;
+					heldAtMVC = 0;
+					exerciseData = [];
+				} else if ($scope.physiobuddyExercise.state.name === 'timeout'){
+					//if next states is timeout then the user was unable to complete exercise properly
+				}
+	    		$scope.physiobuddyExercise.counter = $scope.physiobuddyExercise.state.count;
+	    	}
+	    	if ($scope.physiobuddyExercise.state.name === 'measuring'){
+	          // process dataIn and compare it to the mvc, define inMVC or notMVC range here
+	        	if (percentMVC <= exerciseData){
+	        		//if dataOut is higher percentage of MVC than 60 then set flag to true
+	        		atMVC = true;
+	        		if(heldAtMVC >=10){
+	        			doneExercise();
+	        		}
+	        		heldAtMVC++;
+	        	} else {
+	        		if (atMVC) {
+	        			if (mvcMiss<3){
+		        			// if below mvc but it hasn't been 3 seconds
+		        			mvcMiss ++;	        				
+	        			} else {
+	        				atMVC = false;
+	        				mvcMiss = 0;
+	        				heldAtMVC = 0;
+	        			}
+	        		}
+	        	}
+	        }
+	    	//Display Seconds countdown
+	    	$scope.physiobuddyExercise.msg = $scope.physiobuddyExercise.state.msg.replace('XT',''+$scope.physiobuddyExercise.counter);
+	    	console.log('exercise counter ' + $scope.physiobuddyExercise.msg);
+       		console.log('exercise state' + $scope.physiobuddyExercise.state.name);
+       		physiobuddyExercisePlot.addText($scope.physiobuddyExercise.msg);
+	    };
+
     	//function called when user clicks start exercise
-    	function startExercise(){
+    	$scope.startExercise = function(temp){
+			flexvolt.api.turnDataOn();
+        	$scope.physiobuddyExercise.channel = 0;
+        	$scope.physiobuddyExercise.state = states.getReady;
+	        $scope.physiobuddyExercise.counter = $scope.physiobuddyExercise.state.count;
+	        $scope.physiobuddyExercise.msg = $scope.physiobuddyExercise.state.msg.replace('XT',''+$scope.physiobuddyExercise.counter);
+	        physiobuddyExercisePlot.addText($scope.physiobuddyExercise.msg);
+	        console.log('start Exercise');
+	        stateInterval = $interval(exerciseProcessor,1000);
+    	};
+
+    	function doneExercise(){
+    		//called when mvc has been held for at least 10 seconds
+    		physiobuddyExercisePlot.doneExercise();
+    		flexvolt.api.turnDataOff();
 
     	};
+
+	    function updateAnimate(){
+	        if ($scope.updating)return; // don't try to draw any graphics while the settings are being changed
+
+	        var dataIn = dataHandler.getData();
+	        if (dataIn === null || dataIn === angular.undefined ||
+	            dataIn[0] === angular.undefined || dataIn[0].length === 0){return;}
+
+	        // convert data to percentMVC 
+	        var dataOut = [];
+	        var sum = 0, k=0;
+	        if (dataIn[k].length > 0){
+	            for (var i = 0; i < dataIn[k].length; i++){
+	              sum += Math.abs(dataIn[k][i]);
+	            }
+	           	dataOut[k] = 100 * (sum/dataIn[k].length) / $scope.pageLogic.settings.mvc; // adjusting to actual
+	        } else {
+	            dataOut[k].value = 0; // just set to 0 if no values?
+	        }
+	        // if we are in measuring state we should be comparing to mvc and setting flag
+	        exerciseData = dataOut[k];
+	        // console.log(dataOut);
+
+	        physiobuddyExercisePlot.update(dataOut[k]);
+   		};
+
+	    function paintStep(){
+	        if ($state.current.url === currentUrl){
+	          afID = window.requestAnimationFrame(paintStep);
+	          frameCounts++;
+	          if (frameCounts > 5){
+	            frameCounts = 0;
+	            updateAnimate();
+	          }
+	        } else if ($state.current.url === '/connection'){
+	          afID = window.requestAnimationFrame(paintStep);
+	        }
+	    };
 
     	function init() {
 	        if($state.current.url === currentUrl){
@@ -50,8 +163,8 @@
 	                for (var i= 0; i < physiobuddyLogic.settings.filters.length; i++){
 	                    dataHandler.addFilter(physiobuddyLogic.settings.filters[i]);
 	                }
-	                // physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax);
-	                // paintStep();
+	                physiobuddyExercisePlot.init('#physiobuddyExerciseWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax);
+	                paintStep();
 	            });
 	        }
 	      }
@@ -68,7 +181,16 @@
 					call completedSet()
 				dataVal =
     	*/
-
+    	window.onresize = function() {
+	          if (afID){
+	            window.cancelAnimationFrame(afID);
+	          }
+	          afID = undefined;
+	          $scope.updating  = true;
+	          physiobuddyExercisePlot.resize();
+	          $scope.updating  = false;
+	          paintStep();
+	    };
 
       init();
     }])
@@ -137,7 +259,7 @@
 			//turn data off and set MVC 
 			physiobuddyLogic.settings.mvc = mvc;
 			flexvolt.api.turnDataOff();
-			$state.go('physiobuddyCalibrated',{mvcCalculated : mvc})
+			$state.go('physiobuddyCalibrated');
 	    };
 
 	    //realtime processing data, called every second
@@ -205,7 +327,6 @@
 	          mvcData = mvcData.concat(dataIn[$scope.physiobuddyMVC.channel]);
 	        }
 
-	        // convert data to downsampled and scale-factored form
 	        var dataOut = [];
 	        if (dataIn[0].length === 0){
 	        	dataIn[0].value = 0
