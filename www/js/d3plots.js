@@ -397,20 +397,6 @@ angular.module('flexvolt.d3plots', [])
 })
 
 .factory('physiobuddyExercisePlot', function () {
-  
-   var mar, margin, width, height, plotElement;
-    mar = 10;
-    margin = {top: mar, right: mar, bottom: mar, left: 70};
-    var headerPadding = 45;
-    var footerPadding = 160;
-    // width = window.innerWidth - margin.left - margin.right,
-    // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
-    width = window.innerWidth - margin.left - margin.right,
-    height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
-    var yMax;
-
-    var svg, xScale, xAxis, yScale, yAxis, data = [], barMax, yLabel;
-    var textLabel = undefined;
 
   var api = {
     init:undefined,
@@ -422,29 +408,137 @@ angular.module('flexvolt.d3plots', [])
     removeText: undefined
   };
 
-  
+  var Needle, arc1, arc2, arc1EndRad, arc1StartRad, barWidth, chart, chartInset, arc2EndRad, arc2StartRad, bar2Width, chart2Inset, degToRad, plotElement, endPadRad, height, i, margin, needle, numSections, padRad, percToDeg, percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad, svg, totalPercent, width;
+  var chartSettings = {
+      percent: .65,
+      barWidth: 20,
+      //this is the red section, which is below 60% MVC
+      // 0.6 / 2 since half a circle
+      section1Perc : 0.30,
+      //this is the green section, which is above 60% MVC
+      // 0.4 / 2 since half a circle
+      section2Perc : 0.20,
+      padRad : 0.05,
+      chartInset : 10,
+      // start at 270deg
+      totalPercent : .75,
+      radius: 200,
+      margin : {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 20
+      }
+  };
+
+
+
+  // Needle = class Needle {
+  //   constructor(len, radius1) {
+  //     this.len = len;
+  //     this.radius = radius1;
+  //   }
+
+  //   drawOn(el, perc) {
+  //     el.append('circle').attr('class', 'needle-center').attr('cx', 0).attr('cy', 0).attr('r', this.radius);
+  //     return el.append('path').attr('class', 'needle').attr('d', this.mkCmd(perc));
+  //   }
+
+  //   //call this in the update function
+  //   animateOn(el, perc) {
+  //     var self;
+  //     self = this;
+  //     return el.transition().delay(500).ease('elastic').duration(3000).selectAll('.needle').tween('progress', function() {
+  //       return function(percentOfPercent) {
+  //         var progress;
+  //         progress = percentOfPercent * perc;
+  //         return d3.select(this).attr('d', self.mkCmd(progress));
+  //       };
+  //     });
+  //   }
+
+  //   mkCmd(perc) {
+  //     var centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
+  //     thetaRad = percToRad(perc / 2); // half circle
+  //     centerX = 0;
+  //     centerY = 0;
+  //     topX = centerX - this.len * Math.cos(thetaRad);
+  //     topY = centerY - this.len * Math.sin(thetaRad);
+  //     //don't really need the stuff below, this just makes the triangle
+  //     leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
+  //     leftY = centerY - this.radius * Math.sin(thetaRad - Math.PI / 2);
+  //     rightX = centerX - this.radius * Math.cos(thetaRad + Math.PI / 2);
+  //     rightY = centerY - this.radius * Math.sin(thetaRad + Math.PI / 2);
+  //     return `M ${leftX} ${leftY} L ${topX} ${topY} L ${rightX} ${rightY}`;
+  //   }
+
+  // };
+
+  // needle = new Needle(150, 10);
+
+  // needle.drawOn(chart, 0);
+
+  // needle.animateOn(chart, percent);
+
+
+   //old code
+   var mar, margin, width, height, plotElement;
+    mar = 10;
+    margin = {top: mar, right: mar, bottom: mar, left: 70};
+    var headerPadding = 45;
+    var footerPadding = 160;
+    // width = window.innerWidth - margin.left - margin.right,
+    // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
+    width = window.innerWidth - margin.left - margin.right,
+    height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
+    var yMax;
+
+    var svg, xScale, xAxis, yScale, yAxis, data = [], yLabel;
+    var textLabel = undefined;
+
+  percToDeg = function(perc) {
+    return perc * 360;
+  };
+
+  percToRad = function(perc) {
+    return degToRad(percToDeg(perc));
+  };
+
+  degToRad = function(deg) {
+    return deg * Math.PI / 180;
+  };
   api.reset = function(){
       if (svg){
         d3.select('svg').remove();
       }
-      svg = d3.select(plotElement).append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      width = width - margin.left - margin.right;
+      height = width;
+      radius = Math.min(width, height) / 2;
+      svg = d3.select(plotElement).append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+
+      chart = svg.append('g').attr('transform', `translate(${(width + margin.left) / 2}, ${(height + margin.top) / 2})`);
 
 
-      xScale = d3.scale.linear()
-          .range([0, width])
-          .domain([0, barMax]);
+
+    // build gauge bg
+    //draw the first section:
+      arc1 = d3.svg.arc().outerRadius(chartSettings.radius).innerRadius(chartSettings.radius - chartSettings.chartInset - chartSettings.barWidth).startAngle(arc1StartRad).endAngle(arc1EndRad);
+      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1); 
+    //draw the second section
+      arc2 = d3.svg.arc().outerRadius(chartSettings.radius-chartSettings.chartInset/2).innerRadius(chartSettings.radius - chart2Inset - bar2Width).startAngle(arc2StartRad).endAngle(arc2EndRad);
+      chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
+
+      // xScale = d3.scale.linear()
+      //     .range([0, width])
+      //     .domain([0, barMax]);
       
-      svg.selectAll("rect") // this is what actually creates the bars
-        .data(data)
-      .enter().append("rect")
-        .attr("width", barMax)
-        .attr("height", 20)
-        .attr("rx", 5) // rounded corners
-        .attr("ry", 5);
+      // svg.selectAll("rect") // this is what actually creates the bars
+      //   .data(data)
+      // .enter().append("rect")
+      //   .attr("width", barMax)
+      //   .attr("height", 20)
+      //   .attr("rx", 5) // rounded corners
+      //   .attr("ry", 5);
         
   };
 
@@ -454,7 +548,7 @@ angular.module('flexvolt.d3plots', [])
     //   data[k].value = Math.max(0,dataIn[k]); // adjusting to actual
     // }
   
-    svg.selectAll('rect').remove();
+    svg.selectAll('rect').remove();//Need to update needle position and change width of the bar if less than MVC
     svg.selectAll('bars')
       .data(dataIn)
       .enter()
@@ -500,7 +594,12 @@ angular.module('flexvolt.d3plots', [])
       width = window.innerWidth - margin.left - margin.right,
       height = 600 - margin.top - headerPadding - margin.bottom - footerPadding;
       api.settings = settings;
-      barMax =  settings.xMax;
+      arc1StartRad = ((chartSettings.totalPercent)*360 *Math.PI)/180;
+      arc1EndRad = arc1StartRad + ((chartSettings.section1Perc*360 *Math.PI)/180);
+      arc2StartRad = arc1EndRad;
+      arc2EndRad = arc2StartRad + ((chartSettings.section2Perc*360 *Math.PI)/180);
+      bar2Width = chartSettings.barWidth - 8;
+      chart2Inset = chartSettings.chartInset +2;
       api.reset();
   }
 
@@ -514,7 +613,7 @@ angular.module('flexvolt.d3plots', [])
   api.resize = function(){
       console.log('DEBUG: plot resized');
       width = window.innerWidth - margin.left - margin.right,
-      height = 600 - margin.top - headerPadding - margin.bottom - footerPadding;
+      height = 500 - margin.top - headerPadding - margin.bottom - footerPadding;
 
       api.reset();
   };

@@ -12,7 +12,7 @@
     	var currentUrl = $state.current.url;
 	    var calculatedMvc = physiobuddyLogic.settings.mvc;
 	    $scope.pageLogic = physiobuddyLogic;
-	    var exerciseData = [], percentMVC = 60, stateInterval;
+	    var exerciseData = [], percentMVC = 60, stateIntervalExercise;
 	    var atMVC = false, heldAtMVC = 0, mvcMiss = 0;
       	
       	var states = {
@@ -106,13 +106,15 @@
 	        $scope.physiobuddyExercise.msg = $scope.physiobuddyExercise.state.msg.replace('XT',''+$scope.physiobuddyExercise.counter);
 	        physiobuddyExercisePlot.addText($scope.physiobuddyExercise.msg);
 	        console.log('start Exercise');
-	        stateInterval = $interval(exerciseProcessor,1000);
+	        stateIntervalExercise = $interval(exerciseProcessor,1000);
     	};
 
     	function doneExercise(){
     		//called when mvc has been held for at least 10 seconds
     		physiobuddyExercisePlot.doneExercise();
     		flexvolt.api.turnDataOff();
+    		//stop the function from continuing to be called
+    		$interval.cancel();
 
     	};
 
@@ -260,6 +262,7 @@
 			physiobuddyLogic.settings.mvc = mvc;
 			flexvolt.api.turnDataOff();
 			$state.go('physiobuddyCalibrated');
+			$interval.cancel();
 	    };
 
 	    //realtime processing data, called every second
