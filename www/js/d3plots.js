@@ -408,7 +408,7 @@ angular.module('flexvolt.d3plots', [])
     removeText: undefined
   };
 
-  var Needle, arc1, arc2, arc1EndRad, arc1StartRad, barWidth, chart, chartInset, arc2EndRad, arc2StartRad, bar2Width, chart2Inset, degToRad, plotElement, endPadRad, height, i, margin, needle, numSections, padRad, percToDeg, percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad, svg, totalPercent, width;
+  var Needle, needle, arc1, arc2, arc1EndRad, arc1StartRad, barWidth, chart, chartInset, arc2EndRad, arc2StartRad, bar2Width, chart2Inset, degToRad, plotElement, endPadRad, height, i, margin, needle, numSections, padRad, percToDeg, percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad, svg, totalPercent, width;
   var chartSettings = {
       percent: .65,
       barWidth: 20,
@@ -431,54 +431,58 @@ angular.module('flexvolt.d3plots', [])
       }
   };
 
+  percToDeg = function(perc) {
+    return perc * 360;
+  };
 
+  percToRad = function(perc) {
+    return degToRad(percToDeg(perc));
+  };
 
-  // Needle = class Needle {
-  //   constructor(len, radius1) {
-  //     this.len = len;
-  //     this.radius = radius1;
-  //   }
+  degToRad = function(deg) {
+    return deg * Math.PI / 180;
+  };
 
-  //   drawOn(el, perc) {
-  //     el.append('circle').attr('class', 'needle-center').attr('cx', 0).attr('cy', 0).attr('r', this.radius);
-  //     return el.append('path').attr('class', 'needle').attr('d', this.mkCmd(perc));
-  //   }
+  Needle = class Needle {
+    constructor(len, radius1) {
+      this.len = len;
+      this.radius = radius1;
+    }
 
-  //   //call this in the update function
-  //   animateOn(el, perc) {
-  //     var self;
-  //     self = this;
-  //     return el.transition().delay(500).ease('elastic').duration(3000).selectAll('.needle').tween('progress', function() {
-  //       return function(percentOfPercent) {
-  //         var progress;
-  //         progress = percentOfPercent * perc;
-  //         return d3.select(this).attr('d', self.mkCmd(progress));
-  //       };
-  //     });
-  //   }
+    drawOn(el, perc) {
+      el.append('circle').attr('class', 'needle-center').attr('cx', 0).attr('cy', 0).attr('r', this.radius);
+      return el.append('path').attr('class', 'needle').attr('d', this.mkCmd(perc));
+    }
 
-  //   mkCmd(perc) {
-  //     var centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
-  //     thetaRad = percToRad(perc / 2); // half circle
-  //     centerX = 0;
-  //     centerY = 0;
-  //     topX = centerX - this.len * Math.cos(thetaRad);
-  //     topY = centerY - this.len * Math.sin(thetaRad);
-  //     //don't really need the stuff below, this just makes the triangle
-  //     leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
-  //     leftY = centerY - this.radius * Math.sin(thetaRad - Math.PI / 2);
-  //     rightX = centerX - this.radius * Math.cos(thetaRad + Math.PI / 2);
-  //     rightY = centerY - this.radius * Math.sin(thetaRad + Math.PI / 2);
-  //     return `M ${leftX} ${leftY} L ${topX} ${topY} L ${rightX} ${rightY}`;
-  //   }
+    //call this in the update function
+    animateOn(el, perc) {
+      var self;
+      self = this;
+      return el.transition().delay(500).ease('elastic').duration(3000).selectAll('.needle').tween('progress', function() {
+        return function(percentOfPercent) {
+          var progress;
+          progress = percentOfPercent * perc;
+          return d3.select(this).attr('d', self.mkCmd(progress));
+        };
+      });
+    }
 
-  // };
+    mkCmd(perc) {
+      var centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
+      thetaRad = percToRad(perc / 2); // half circle
+      centerX = 0;
+      centerY = 0;
+      topX = centerX - this.len * Math.cos(thetaRad);
+      topY = centerY - this.len * Math.sin(thetaRad);
+      //don't really need the stuff below, this just makes the triangle
+      leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
+      leftY = centerY - this.radius * Math.sin(thetaRad - Math.PI / 2);
+      rightX = centerX - this.radius * Math.cos(thetaRad + Math.PI / 2);
+      rightY = centerY - this.radius * Math.sin(thetaRad + Math.PI / 2);
+      return `M ${leftX} ${leftY} L ${topX} ${topY} L ${rightX} ${rightY}`;
+    }
 
-  // needle = new Needle(150, 10);
-
-  // needle.drawOn(chart, 0);
-
-  // needle.animateOn(chart, percent);
+  };
 
 
    //old code
@@ -496,17 +500,7 @@ angular.module('flexvolt.d3plots', [])
     var svg, xScale, xAxis, yScale, yAxis, data = [], yLabel;
     var textLabel = undefined;
 
-  percToDeg = function(perc) {
-    return perc * 360;
-  };
 
-  percToRad = function(perc) {
-    return degToRad(percToDeg(perc));
-  };
-
-  degToRad = function(deg) {
-    return deg * Math.PI / 180;
-  };
   api.reset = function(){
       if (svg){
         d3.select('svg').remove();
@@ -528,6 +522,9 @@ angular.module('flexvolt.d3plots', [])
       arc2 = d3.svg.arc().outerRadius(chartSettings.radius-chartSettings.chartInset/2).innerRadius(chartSettings.radius - chart2Inset - bar2Width).startAngle(arc2StartRad).endAngle(arc2EndRad);
       chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
 
+      needle = new Needle(150, 10);
+      needle.drawOn(chart, 0);
+      needle.animateOn(chart, chartSettings.percent);
       // xScale = d3.scale.linear()
       //     .range([0, width])
       //     .domain([0, barMax]);
@@ -548,18 +545,7 @@ angular.module('flexvolt.d3plots', [])
     //   data[k].value = Math.max(0,dataIn[k]); // adjusting to actual
     // }
   
-    svg.selectAll('rect').remove();//Need to update needle position and change width of the bar if less than MVC
-    svg.selectAll('bars')
-      .data(dataIn)
-      .enter()
-      .append('rect')
-      // .attr('x', function(d) {return xScale(d.x);})
-      // .attr('y', width})
-      .attr('width', function(d) {return d})
-      // .attr('height', function(d) {return height-yScale(d.value);})
-      .attr("height", 20)
-      .attr("rx", 5) // rounded corners
-      .attr("ry", 5);
+    needle.animateOn(chart, dataIn);
 
 
 
