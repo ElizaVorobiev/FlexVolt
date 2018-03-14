@@ -456,15 +456,17 @@ angular.module('flexvolt.d3plots', [])
 
     //call this in the update function
     animateOn(el, perc) {
-      var self;
-      self = this;
-      return el.transition().delay(500).ease('elastic').duration(3000).selectAll('.needle').tween('progress', function() {
-        return function(percentOfPercent) {
-          var progress;
-          progress = percentOfPercent * perc;
-          return d3.select(this).attr('d', self.mkCmd(progress));
-        };
-      });
+      d3.select('.needle').attr('d', this.mkCmd(perc));
+      //remove animation for now
+      // var self;
+      // self = this;
+      // return el.transition().delay(500).ease('elastic').duration(3000).selectAll('.needle').tween('progress', function() {
+      //   return function(percentOfPercent) {
+      //     var progress;
+      //     progress = percentOfPercent * perc;
+      //     return d3.select(this).attr('d', self.mkCmd(progress));
+      //   };
+      // });
     }
 
     mkCmd(perc) {

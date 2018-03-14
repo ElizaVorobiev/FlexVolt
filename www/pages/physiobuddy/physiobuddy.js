@@ -12,7 +12,7 @@
     	var currentUrl = $state.current.url;
 	    var calculatedMvc = physiobuddyLogic.settings.mvc;
 	    $scope.pageLogic = physiobuddyLogic;
-	    var exerciseData = [], percentMVC = 60, stateIntervalExercise;
+	    var exerciseData = [], percentMVC = .60, stateIntervalExercise;
 	    var atMVC = false, heldAtMVC = 0, mvcMiss = 0;
       	
       	var states = {
@@ -259,7 +259,7 @@
 			//clear the chart
 			//physiobuddyCalibratePlot.afterMVC();
 			//turn data off and set MVC 
-			physiobuddyLogic.settings.mvc = mvc;
+			physiobuddyLogic.settings.mvc = mvc*100;
 			flexvolt.api.turnDataOff();
 			$state.go('physiobuddyCalibrated');
 			$interval.cancel();
@@ -336,7 +336,7 @@
 	        }
 
 	        dataOut = dataIn[0];
-	        // console.log(dataOut);
+	        console.log(dataOut);
 
 	        physiobuddyCalibratePlot.update(dataOut);
    		};

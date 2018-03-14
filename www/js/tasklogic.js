@@ -442,6 +442,11 @@ angular.module('flexvolt.taskLogic', [])
               var Filter3 = angular.copy(logicOptions.filterOptions.filter(function(item){ return item.name === 'Average';})[0]);
               Filter3.params.windowSize.value = 10;
               settings.filters.push(Filter3);
+
+              var Filter4 = angular.copy(logicOptions.filterOptions.filter(function(item){ return item.name === 'Frequency - Low Pass';})[0]);
+              Filter4.params.f2.value = 1;
+              settings.filters.push(Filter4);
+
             }
             deferred.resolve();
         });
