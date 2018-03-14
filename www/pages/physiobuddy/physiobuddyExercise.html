@@ -25,19 +25,24 @@
 
             <div class = "row", style = "justify-content: center; align-items: center; height: 40%", id = "physiobuddyExerciseWindow" ><p>animations should go here</p></div>
             <br><br><br>
-            <div class="calibrate-content-button"><button  ng-click = "startExercise()", class = "button-exercise">Start Recording</button></div>
+            <div class="calibrate-content-button"><button  ng-click = "startExercise()", class = "button">Start Recording</button></div>
+            <button ng-click="openModal(1)" class="button">Rest Modal</button>
+            <button ng-click="openModal(2)" class="button">Badge Modal</button>
             <br>
-            <div class="calibrate-content-button"><button ui-sref = "physiobuddy", class = "button-exercise"> Home</button></div>
+            <div class="calibrate-content-button"><button ui-sref = "physiobuddy", class = "button"> Home</button></div>
             <br><br><br><br><br><br><br><br>
-            <div class = "row", style = " border-top: #F2F2F2; border-style: solid"> 
-                <div class="col" style="margin: auto;">
-                    <img src="\img\physioBuddy\starting-position.png" style="max-block-size:100px;display: block;margin: auto;">
-                </div>
-                <div class="col" style="margin: auto; text-align: center;">    
-                    <img src="\img\physioBuddy\arrow-icon.png" style="padding: 15%">
-                </div>
-                <div class="col" style="margin: auto;">        
-                    <img src="\img\physioBuddy\ending-position.png" style="max-block-size:100px;display: block;margin: auto;">
+           <div class="exercise-footer">
+                    <div class = "row"> 
+                        <div class="col" style="margin: auto;">
+                            <img src="\img\physioBuddy\starting-position.png" style="max-block-size:130px;display: block;margin: auto;">
+                        </div>
+                        <div class="col" style="margin: auto;">    
+                            <img src="\img\physioBuddy\arrow-icon.png" style="padding: 15%">
+                        </div>
+                        <div class="col" style="margin: auto;">        
+                        <img src="\img\physioBuddy\ending-position.png" style="max-block-size:130px;display: block;margin: auto;">
+                        </div>
+                    </div>
                 </div>
             </div>
             </div>

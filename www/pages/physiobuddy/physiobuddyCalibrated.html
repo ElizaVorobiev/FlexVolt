@@ -23,15 +23,15 @@
                 </div>
                 <div>
                     <p class  = "calibrate-content-instructions"> Your brace is now ready to go! Here's a reminder of your exercise: </br> </p>
-                    <ul style = "list-style-type:disc" >
-                      <li>Sit on the ground and place your <b> legs in front </b> of you in a relaxed position.</li></br>
-                      <li>Push your injured <b> knee to the ground </b> to move the meter. Once the meter is in the green zone, the timer will begin.</li></br>
-                      <li><b>Hold</b> this posistion and ensure the meter stays in the green zone until the timer reaches zero.</li></br>
-                      <li><b>Relax</b> your legs and rest for one minute.</li></br>
+                    <ul class="calibrate-list">
+                      <li style="margin-bottom: 5px">Sit on the ground and place your <span id="bold-text"> legs in front </span> of you in a relaxed position.</li></br>
+                      <li style="margin-bottom: 5px">Push your injured <span id="bold-text"> knee to the ground</span> to move the meter. Once the meter is in the green zone, the timer will begin.</li></br>
+                      <li style="margin-bottom: 5px"><span id="bold-text">Hold</span> this posistion and ensure the meter stays in the green zone until the timer reaches zero.</li></br>
+                      <li style="margin-bottom: 5px"><span id="bold-text">Relax</span> your legs and rest for one minute.</li></br></br>
                   </ul>
                 </div>
                 <div class = "calibrate-content-button">
-                    <button class = "button", ng-click = "openModal()">Start Exercise</button>
+                    <button class = "button", ng-click = "openModal(0)">Start Exercise</button>
                 </div>
             </div>
         </div>

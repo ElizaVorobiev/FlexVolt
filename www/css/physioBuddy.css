@@ -56,7 +56,7 @@
 }
 
 .card-content {
-  margin: 5% 8% 3% 8%;
+  margin: 5% 8% 0.1% 8%;
 }
 
 .card-footer {
@@ -114,16 +114,6 @@
   text-align: center;
 }
 
-.button{
-  background: #3498db;
-  border-radius: 20px;
-  border-color: #2A9FD8;
-  border-width: 2px;
-  color: #ffffff;
-  font-size: 100%;
-  text-align: center;
-}
-
 #bluetooth-animation img {
   height: 5px; 
   width: auto;
@@ -142,6 +132,11 @@
   top:3px
 }
 
+.calibrate-list {
+  list-style-type: disc;
+  padding-left: 30px; 
+}
+
 /* EXERCISE PAGE */
 
 .fv-theme-exercise{
@@ -156,13 +151,13 @@
 } 
 
 .modal-content{
-  margin: 5%;
+  margin: 5% 10%;
 }
 
 .exercise-content{
-padding: 5%;
-
+/*padding: 5%;*/
 }
+
 .exercise-content-title{
  color: #2980B9; 
  text-align: center;
@@ -183,15 +178,35 @@ padding: 5%;
   text-align: center;
 }
 
-.button-exercise{
+.exercise-footer {
+  background-color: #FFFFFF;
+  border-top: #F2F2F2;
+  border-style: solid;
+  padding-left: 7%;
+  padding-right: 7%;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%
+}
+
+.button{
   background: #3498db;
   border-radius: 20px;
-  border-color: #2A9FD8;
+  border-color: #2980B9;
   border-width: 2px;
   color: #ffffff;
   font-size: 100%;
-  padding: 3px 12px;
   text-align: center;
+  padding: 0px 30px;
+  vertical-align: middle;
+  transition-duration: 0.3s;
+}
+
+.button:hover {
+  color: #ffffff;
+  background: #2980B9;
+  border-color: #2980B9;
 }
 
 .button-modal{
@@ -202,6 +217,24 @@ padding: 5%;
   color: #ffffff;
   font-size: 100%;
   text-align: center;
-  padding: 5px 20px;
+  padding: 5px 30px;
   vertical-align: middle;
+}
+
+.timer {
+  text-align: center;
+  font-weight: 500;
+  color: #D35400; 
+  font-size: 22px; 
+}
+
+.finished-modal {
+  width: 100%; 
+ text-align: center; 
+ margin-bottom: 10px
+}
+
+.finished-modal img {
+  width: 30%; 
+  height: auto;
 }

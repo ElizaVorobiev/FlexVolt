@@ -6,40 +6,58 @@
     .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicPopover', '$ionicModal', '$interval', 'customPopover',
     function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $setTimeout, $interval, dataHandler, hardwareLogic, customPopover) {
 
- 
-   //Code for a popup
-   //  $scope.summaryPopup = function() {
-	
-   //    var promptPopup = $ionicPopup.prompt({
-   //       title: 'Flat Knee Flex',
-   //       template: 'Template text',
-   //       inputType: 'text',
-   //       inputPlaceholder: 'Placeholder'
-   //  	});
-        
-   //    promptPopup.then(function(res) {
-   //       console.log(res);
-   //    });	
-   // };
 
-   // Modal for PhysiobuddyExercise
     $ionicModal.fromTemplateUrl('/pages/physiobuddy/physiobuddyExercise-modal.html', {
-    	scope: $scope
+      id: '0',
+      scope: $scope,
     }).then(function(modal) {
-    	$scope.modal = modal;
+      $scope.oModal0 = modal;
     });
-	$scope.openModal = function() { 
-		$scope.modal.show()
-	};
-	$scope.closeModal = function() {    
-		$scope.modal.hide();
-		clearTimeout();
-	};
-	//this makes the popup load on page
-	// $setTimeout(function(){
- //    	$scope.openModal();
- //  	});
 
+    $ionicModal.fromTemplateUrl('/pages/physiobuddy/physiobuddyExercise-rest-modal.html', {
+      id: '1', 
+      scope: $scope,
+    }).then(function(modal) {
+      $scope.oModal1 = modal;
+    });
+
+    $ionicModal.fromTemplateUrl('/pages/physiobuddy/physiobuddyExercise-finished-modal.html', {
+      id: '2', 
+      scope: $scope,
+    }).then(function(modal) {
+      $scope.oModal2 = modal;
+    });
+
+    $scope.openModal = function(index) {
+      if (index == 0) $scope.oModal0.show();
+      else if (index == 1) $scope.oModal1.show();
+      else $scope.oModal2.show();
+    };
+
+    $scope.closeModal = function(index) {
+      if (index == 1) $scope.oModal1.hide();
+      else if (index == 0) $scope.oModal0.hide();
+      else $scope.oModal2.hide();
+    };  
+
+    //countdown timer
+    // var timeleft = 10;
+    // var countdownTimer = setInterval( function() {
+    // timeleft = timeleft-1;
+    // document.getElementById("timer").textContent = timeleft;
+    // if(timeleft <= 0) {
+    //     closeModal(1);
+    //     clearInterval(countdownTimer);
+    // }
+    // },1500);
+
+var timeleft = 10;
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("timer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
 
     	/* Physiobuddy home 
 			- display some info about user (todo:later)
