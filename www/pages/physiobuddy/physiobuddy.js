@@ -48,6 +48,16 @@
       		channel: 0,
       	};
 
+    	function doneExercise(){
+    		//called when mvc has been held for at least 10 seconds
+    		physiobuddyExercisePlot.doneExercise();
+    		flexvolt.api.turnDataOff();
+    		console.log('done exercise')
+    		//stop the function from continuing to be called
+    		$interval.cancel();
+
+    	};
+
     	//realtime processing data, called every second
 	    function exerciseProcessor(){
 	    	if ($scope.physiobuddyExercise.counter > 0){
@@ -73,16 +83,23 @@
 	        	if (percentMVC <= exerciseData){
 	        		//if dataOut is higher percentage of MVC than 60 then set flag to true
 	        		atMVC = true;
-	        		if(heldAtMVC >=10){
+	        		physiobuddyExercisePlot.addText('Great Job! Keep pushing!');
+	        		physiobuddyExercisePlot.addCountdownText(heldAtMVC);
+	        		if(heldAtMVC >=5){
 	        			doneExercise();
 	        		}
 	        		heldAtMVC++;
 	        	} else {
+	        		physiobuddyExercisePlot.addText('Push Harder!!')
 	        		if (atMVC) {
 	        			if (mvcMiss<3){
 		        			// if below mvc but it hasn't been 3 seconds
+		        			physiobuddyExercisePlot.addCountdownText(heldAtMVC);
+		        			// physiobuddyExercisePlot.addText('push harder!');
+		        			heldAtMVC++;
 		        			mvcMiss ++;	        				
 	        			} else {
+	        				physiobuddyExercisePlot.removeCountdownText();
 	        				atMVC = false;
 	        				mvcMiss = 0;
 	        				heldAtMVC = 0;
@@ -93,6 +110,7 @@
 	    	//Display Seconds countdown
 	    	$scope.physiobuddyExercise.msg = $scope.physiobuddyExercise.state.msg.replace('XT',''+$scope.physiobuddyExercise.counter);
 	    	console.log('exercise counter ' + $scope.physiobuddyExercise.msg);
+	    	console.log('mvc counter ' + heldAtMVC);
        		console.log('exercise state' + $scope.physiobuddyExercise.state.name);
        		physiobuddyExercisePlot.addText($scope.physiobuddyExercise.msg);
 	    };
@@ -109,14 +127,6 @@
 	        stateIntervalExercise = $interval(exerciseProcessor,1000);
     	};
 
-    	function doneExercise(){
-    		//called when mvc has been held for at least 10 seconds
-    		physiobuddyExercisePlot.doneExercise();
-    		flexvolt.api.turnDataOff();
-    		//stop the function from continuing to be called
-    		$interval.cancel();
-
-    	};
 
 	    function updateAnimate(){
 	        if ($scope.updating)return; // don't try to draw any graphics while the settings are being changed

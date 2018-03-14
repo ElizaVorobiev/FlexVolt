@@ -405,7 +405,9 @@ angular.module('flexvolt.d3plots', [])
     update:undefined,
     settings:undefined,
     addText: undefined,
-    removeText: undefined
+    removeText: undefined,
+    addCountdownText: undefined,
+    removeCountdownText: undefined
   };
 
   var Needle, needle, arc1, arc2, arc1EndRad, arc1StartRad, barWidth, chart, chartInset, arc2EndRad, arc2StartRad, bar2Width, chart2Inset, degToRad, plotElement, endPadRad, height, i, margin, needle, numSections, padRad, percToDeg, percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad, svg, totalPercent, width;
@@ -487,7 +489,6 @@ angular.module('flexvolt.d3plots', [])
   };
 
 
-   //old code
    var mar, margin, width, height, plotElement;
     mar = 10;
     margin = {top: mar, right: mar, bottom: mar, left: 70};
@@ -501,7 +502,7 @@ angular.module('flexvolt.d3plots', [])
 
     var svg, xScale, xAxis, yScale, yAxis, data = [], yLabel;
     var textLabel = undefined;
-
+    var exerciseCount = undefined;
 
   api.reset = function(){
       if (svg){
@@ -524,20 +525,11 @@ angular.module('flexvolt.d3plots', [])
       arc2 = d3.svg.arc().outerRadius(chartSettings.radius-chartSettings.chartInset/2).innerRadius(chartSettings.radius - chart2Inset - bar2Width).startAngle(arc2StartRad).endAngle(arc2EndRad);
       chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
 
+    //draw needle
       needle = new Needle(150, 10);
       needle.drawOn(chart, 0);
       needle.animateOn(chart, chartSettings.percent);
-      // xScale = d3.scale.linear()
-      //     .range([0, width])
-      //     .domain([0, barMax]);
-      
-      // svg.selectAll("rect") // this is what actually creates the bars
-      //   .data(data)
-      // .enter().append("rect")
-      //   .attr("width", barMax)
-      //   .attr("height", 20)
-      //   .attr("rx", 5) // rounded corners
-      //   .attr("ry", 5);
+
         
   };
 
@@ -562,6 +554,18 @@ angular.module('flexvolt.d3plots', [])
           .attr('text-anchor', 'middle')
           .style('font', '16px Helvetica');
       }
+      if (exerciseCount){
+        d3.select('#exerciseCount').remove();
+        svg.append('text')
+          .attr('id','exerciseCount')
+          .attr('x', width/2)
+          .attr('y', margin.top+(height/2)+20)
+          .text(exerciseCount)
+          .attr('fill','black')
+          .attr('text-anchor', 'middle')
+          .style('font', '20px Helvetica');
+      }
+
 
   }
 
@@ -573,6 +577,16 @@ angular.module('flexvolt.d3plots', [])
   api.removeText = function(){
     d3.select('#exercisePrompt').remove();
     textLabel = undefined;
+  };
+
+  api.addCountdownText = function(text){
+    d3.select('#exerciseCount').remove();
+    exerciseCount = text;
+  };
+
+  api.removeCountdownText = function(){
+    d3.select('#exerciseCount').remove();
+    exerciseCount = undefined;
   };
 
   api.init = function(element, settings, vMax){
