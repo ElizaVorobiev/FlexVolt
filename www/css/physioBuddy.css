@@ -1,0 +1,240 @@
+/* Adjusting his overall look */
+
+.bar.bar-balanced {
+  border-color: #FFFFFF;
+  background-color: #FFFFFF;
+  background-image: linear-gradient(0deg, #000000, #000000 50%, transparent 50%);
+  left: 0px;
+  color: #000; 
+  }
+
+.nav-bar-block {
+  position: left;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 9; 
+}
+
+.bar .title {
+    display: block;
+    position: left;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    margin: 0px;
+    min-width: 30px;
+    height: 30px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 44px; 
+  }
+
+
+/* blue background of calibration flow */
+.fv-theme-calibrate {
+  background-color: #3498DB; 
+}
+
+.card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* white card styling */
+.card { 
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  width: 75%;
+  height: 75%;
+}
+
+.card-content {
+  margin: 5% 8% 0.1% 8%;
+}
+
+.card-footer {
+  background-color: #FFFFFF;
+  border-top: #F2F2F2;
+  border-style: solid;
+  /*padding: 2% 5%;*/
+  text-align: center;
+}
+
+/* Step colours for calibration flow */
+.calibrate-content-title{
+ color: #2980B9; 
+ text-align:center;
+ font-weight: 400;
+}
+
+ .calibrate-content-title-complete{
+ color: #27AE60; 
+ text-align:center;
+ font-weight: 400;
+}
+
+
+.calibrate-content-instructions{ 
+  padding: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #243342;
+}
+
+.calibrate-content-graph{
+  margin: 2%;
+}
+
+.calibrate-content-countdown{
+  margin: 2%;
+}
+
+.calibrate-content-pictures{
+  text-align: center;
+
+}
+
+.title {
+  left:0px;
+}
+
+#bold-text {
+  font-weight: 500;
+  color: 
+}
+
+.calibrate-content-button{
+  text-align: center;
+}
+
+#bluetooth-animation img {
+  height: 5px; 
+  width: auto;
+  margin: 10px;
+  align-items: center;
+}
+
+.step-completed {
+  vertical-align: middle;
+}
+
+.step-completed img {
+  width: 4%; 
+  margin-right: 5px; 
+  position: relative; 
+  top:3px
+}
+
+.calibrate-list {
+  list-style-type: disc;
+  padding-left: 30px; 
+}
+
+/* EXERCISE PAGE */
+
+.fv-theme-exercise{
+  background-color: #FFFFFF;
+}
+
+.modal-title{
+ color: #d35501; 
+ text-align:center;
+ margin-bottom: 30px;
+ padding-top: 5%;
+} 
+
+.modal-content{
+  margin: 5% 10%;
+}
+
+.exercise-content{
+/*padding: 5%;*/
+}
+
+.exercise-content-title{
+ color: #2980B9; 
+ text-align: center;
+ font-weight: 400;
+}
+
+.exercise-content-instructions{ 
+  margin-top: 3%;
+  text-align: center;
+  color: #243342;
+  font-size: 16px
+}
+
+.exercise-content-graph{
+  margin: 10%;
+  padding: 20;
+  margin-top: 3%;
+  text-align: center;
+}
+
+.exercise-footer {
+  background-color: #FFFFFF;
+  border-top: #F2F2F2;
+  border-style: solid;
+  padding-left: 7%;
+  padding-right: 7%;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%
+}
+
+.button{
+  background: #3498db;
+  border-radius: 20px;
+  border-color: #2980B9;
+  border-width: 2px;
+  color: #ffffff;
+  font-size: 100%;
+  text-align: center;
+  padding: 0px 30px;
+  vertical-align: middle;
+  transition-duration: 0.3s;
+}
+
+.button:hover {
+  color: #ffffff;
+  background: #2980B9;
+  border-color: #2980B9;
+}
+
+.button-modal{
+  background: #E67E22;
+  border-radius: 20px;
+  border-color: #D35400;
+  border-width: 2px;
+  color: #ffffff;
+  font-size: 100%;
+  text-align: center;
+  padding: 5px 30px;
+  vertical-align: middle;
+}
+
+.timer {
+  text-align: center;
+  font-weight: 500;
+  color: #D35400; 
+  font-size: 22px; 
+}
+
+.finished-modal {
+  width: 100%; 
+ text-align: center; 
+ margin-bottom: 10px
+}
+
+.finished-modal img {
+  width: 30%; 
+  height: auto;
+}

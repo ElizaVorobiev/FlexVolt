@@ -6,6 +6,59 @@
     .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'physiobuddyLogic', 'physiobuddyExercisePlot', 'dataHandler', 'hardwareLogic', 'customPopover',
     function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, physiobuddyLogic, physiobuddyExercisePlot, dataHandler, hardwareLogic, customPopover) {
 
+
+    $ionicModal.fromTemplateUrl('/pages/physiobuddy/physiobuddyExercise-modal.html', {
+      id: '0',
+      scope: $scope,
+    }).then(function(modal) {
+      $scope.oModal0 = modal;
+    });
+
+    $ionicModal.fromTemplateUrl('/pages/physiobuddy/physiobuddyExercise-rest-modal.html', {
+      id: '1', 
+      scope: $scope,
+    }).then(function(modal) {
+      $scope.oModal1 = modal;
+    });
+
+    $ionicModal.fromTemplateUrl('/pages/physiobuddy/physiobuddyExercise-finished-modal.html', {
+      id: '2', 
+      scope: $scope,
+    }).then(function(modal) {
+      $scope.oModal2 = modal;
+    });
+
+    $scope.openModal = function(index) {
+      if (index == 0) $scope.oModal0.show();
+      else if (index == 1) $scope.oModal1.show();
+      else $scope.oModal2.show();
+    };
+
+    $scope.closeModal = function(index) {
+      if (index == 1) $scope.oModal1.hide();
+      else if (index == 0) $scope.oModal0.hide();
+      else $scope.oModal2.hide();
+    };  
+
+    //countdown timer
+    // var timeleft = 10;
+    // var countdownTimer = setInterval( function() {
+    // timeleft = timeleft-1;
+    // document.getElementById("timer").textContent = timeleft;
+    // if(timeleft <= 0) {
+    //     closeModal(1);
+    //     clearInterval(countdownTimer);
+    // }
+    // },1500);
+
+// var timeleft = 10;
+//     var downloadTimer = setInterval(function(){
+//     timeleft--;
+//     document.getElementById("timer").textContent = timeleft;
+//     if(timeleft <= 0)
+//         clearInterval(downloadTimer);
+//     },1000);
+
     	// var temp;
     	var afID;
     	var frameCounts = 0;

@@ -1,17 +1,40 @@
-<ion-view title="Physiobuddy">
+<ion-view title="Calibration">
+
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
         <save-panel ng-if="!mobile"></save-panel>
     </ion-nav-buttons>
+
     <ion-nav-buttons side="right">
+        <img src="\img\physioBuddy\check-icon.png" style = "height: 20px; margin-top: 7px;"><br>
+         <p style = "padding-top: 7px; color: #2980B9"> Brace Connected </p>
         <connection-status></connection-status>
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
     </ion-nav-buttons>
-  <ion-content class="has-header fv-theme" scroll="false">
-    <!-- <not-connected></not-connected> -->
-    <h1> MVC has been calibrated</h1>
-    <p>Insert text here</p>
-    <button ui-sref = "physiobuddyExercise">Start Exercise</button>
-  </ion-content>
+    
+    <ion-content class="has-header fv-theme-calibrate" " scroll="false">
+        <div class="card-container">
+        <div class = "card">
+        <!-- <not-connected></not-connected> -->
+            <div class="card-content">
+                <div class="step-completed">
+                    <h3 class = "calibrate-content-title-complete"><img src="\img\physioBuddy\complete-icon.png"> Step 2: Complete</h3>
+                </div>
+                <div>
+                    <p class  = "calibrate-content-instructions"> Your brace is now ready to go! Here's a reminder of your exercise: </br> </p>
+                    <ul class="calibrate-list">
+                      <li style="margin-bottom: 5px">Sit on the ground and place your <span id="bold-text"> legs in front </span> of you in a relaxed position.</li></br>
+                      <li style="margin-bottom: 5px">Push your injured <span id="bold-text"> knee to the ground</span> to move the meter. Once the meter is in the green zone, the timer will begin.</li></br>
+                      <li style="margin-bottom: 5px"><span id="bold-text">Hold</span> this posistion and ensure the meter stays in the green zone until the timer reaches zero.</li></br>
+                      <li style="margin-bottom: 5px"><span id="bold-text">Relax</span> your legs and rest for one minute.</li></br></br>
+                  </ul>
+                </div>
+                <div class = "calibrate-content-button">
+                    <button class = "button", ng-click = "openModal(0)">Start Exercise</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </ion-content>
 </ion-view>

@@ -1,20 +1,52 @@
-<ion-view title="Physiobuddy">
+<ion-view title="Exercise" >
+    
     <ion-nav-buttons side="left">
         <help-popover></help-popover>
         <save-panel ng-if="!mobile"></save-panel>
     </ion-nav-buttons>
+
     <ion-nav-buttons side="right">
+        <img src="\img\physioBuddy\check-icon.png" style = "height: 20px; margin-top: 7px;"><br>
+         <p style = "padding-top: 7px; color: #2980B9"> Brace Connected </p>
         <connection-status></connection-status>
         <filters-popover ng-if="!mobile"></filters-popover>
         <settings-popover></settings-popover>
     </ion-nav-buttons>
-  <ion-content class="has-header fv-theme" scroll="false">
+
+    <ion-content class="has-header fv-theme-exercise" scroll="false"> 
     <!-- <not-connected></not-connected> -->
-    <h1> Flat Knee Flex</h1>
-    <p>Insert text here</p>
-    <div id = "physiobuddyExerciseWindow">animations should go here</div>
-    <!-- <div id = "physiobuddyExerciseCounterWindow">animations should go here</div> -->
-    <button ng-click = "startExercise($index)">Start Recording</button>
-    <button ui-sref = "physiobuddy">Home</button>
+        <div class = "exercise-content">
+            <div class = "row", style = "justify-content: center; align-items: center;">
+            <h2 class=  "exercise-content-title">  Flat Knee Flex</h2></div>
+            
+            <div class = "row", style = "justify-content: center; align-items: center"> <p> 0/5 Repititions</p></div><br><br><br><br>
+
+           <div class = "row", style = "justify-content: center; align-items: center"> <p> Push harder to get in the green zone!</p></div>
+
+            <div class = "row", style = "justify-content: center; align-items: center; height: 40%", id = "physiobuddyExerciseWindow" ><p>animations should go here</p></div>
+            <br><br><br>
+            <div class="calibrate-content-button"><button  ng-click = "startExercise($index)", class = "button">Start Recording</button></div>
+            <button ng-click="openModal(1)" class="button">Rest Modal</button>
+            <button ng-click="openModal(2)" class="button">Badge Modal</button>
+            <br>
+            <div class="calibrate-content-button"><button ui-sref = "physiobuddy", class = "button"> Home</button></div>
+            <br><br><br><br><br><br><br><br>
+           <div class="exercise-footer">
+                    <div class = "row"> 
+                        <div class="col" style="margin: auto;">
+                            <img src="\img\physioBuddy\starting-position.png" style="max-block-size:130px;display: block;margin: auto;">
+                        </div>
+                        <div class="col" style="margin: auto;">    
+                            <img src="\img\physioBuddy\arrow-icon.png" style="padding: 15%">
+                        </div>
+                        <div class="col" style="margin: auto;">        
+                        <img src="\img\physioBuddy\ending-position.png" style="max-block-size:130px;display: block;margin: auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
   </ion-content>
 </ion-view>
