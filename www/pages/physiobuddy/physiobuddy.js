@@ -37,7 +37,9 @@
     $scope.closeModal = function(index) {
       if (index == 1) $scope.oModal1.hide();
       else if (index == 0) $scope.oModal0.hide();
-      else $scope.oModal2.hide();
+      else {
+      	$scope.oModal2.hide().then(function(){$state.go('physiobuddyConnectBrace');})
+      }
     };  
 
     //countdown timer
