@@ -22,6 +22,7 @@
         'flexvolt.appLogic',
         'flexvolt.taskLogic',
         'flexvolt.dsp',
+        'flexvolt.sound',
         // pages
         'flexvolt.balloon',
         'flexvolt.connection',

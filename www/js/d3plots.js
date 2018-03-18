@@ -611,6 +611,7 @@ angular.module('flexvolt.d3plots', [])
 
   api.doneExercise = function(){
     api.addText('Congratulations you have finished your exercise!');
+    api.removeCountdownText();
     // if (svg){
     //     d3.select('svg').remove();
     // }

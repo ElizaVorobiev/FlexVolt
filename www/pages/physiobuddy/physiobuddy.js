@@ -3,8 +3,8 @@
 
 	angular.module('flexvolt.physiobuddy',[])
 
-    .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'physiobuddyLogic', 'physiobuddyExercisePlot', 'dataHandler', 'hardwareLogic', 'customPopover',
-    function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, physiobuddyLogic, physiobuddyExercisePlot, dataHandler, hardwareLogic, customPopover) {
+    .controller('PhysiobuddyCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup','$ionicPopover', '$ionicModal', '$interval', 'physiobuddyLogic', 'physiobuddyExercisePlot', 'dataHandler', 'hardwareLogic', 'customPopover', 'sound',
+    function($scope, $state, $stateParams, $ionicPopup, $ionicPopover, $ionicModal, $interval, physiobuddyLogic, physiobuddyExercisePlot, dataHandler, hardwareLogic, customPopover, sound) {
 
 
     $ionicModal.fromTemplateUrl('/pages/physiobuddy/physiobuddyExercise-modal.html', {
@@ -67,7 +67,8 @@
 	    $scope.pageLogic = physiobuddyLogic;
 	    var exerciseData = [], percentMVC = .60, stateIntervalExercise;
 	    var atMVC = false, heldAtMVC = 0, mvcMiss = 0;
-      	
+      	$scope.repNum = 0;
+      	$scope.totalRep = 5;
       	var states = {
 	        getReady: {
 	          name: 'ready',
@@ -103,9 +104,19 @@
 
     	function doneExercise(){
     		//called when mvc has been held for at least 10 seconds
-    		physiobuddyExercisePlot.doneExercise();
+    		$scope.repNum++;
+			atMVC = false;
+			mvcMiss = 0;
+			heldAtMVC = 0;
+			exerciseData = [];
+			physiobuddyExercisePlot.doneExercise();
     		flexvolt.api.turnDataOff();
-    		console.log('done exercise')
+    		console.log('done exercise');
+    		if ($scope.repNum > 4){
+    			$scope.openModal(2);
+    		} else {
+    			$scope.openModal(1);
+    		}
     		//stop the function from continuing to be called
     		$interval.cancel(stateIntervalExercise);
 
@@ -158,13 +169,15 @@
 	        			}
 	        		}
 	        	}
+	        } else {
+	        	$scope.physiobuddyExercise.msg = $scope.physiobuddyExercise.state.msg.replace('XT',''+$scope.physiobuddyExercise.counter);
+       			physiobuddyExercisePlot.addText($scope.physiobuddyExercise.msg);
+       			sound.beep();
 	        }
 	    	//Display Seconds countdown
-	    	$scope.physiobuddyExercise.msg = $scope.physiobuddyExercise.state.msg.replace('XT',''+$scope.physiobuddyExercise.counter);
 	    	console.log('exercise counter ' + $scope.physiobuddyExercise.msg);
 	    	console.log('mvc counter ' + heldAtMVC);
        		console.log('exercise state' + $scope.physiobuddyExercise.state.name);
-       		physiobuddyExercisePlot.addText($scope.physiobuddyExercise.msg);
 	    };
 
     	//function called when user clicks start exercise
@@ -270,8 +283,8 @@
     	- Move onto exercise bar
     	- Popover before starting exercise with info, click into exercise from here
 	*/
-	.controller('PhysiobuddyCalibrateCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup', '$interval', 'physiobuddyCalibratePlot', 'physiobuddyLogic', 'dataHandler', 'hardwareLogic',
-    function($scope, $state, $stateParams, $ionicPopup, $interval, physiobuddyCalibratePlot, physiobuddyLogic, dataHandler, hardwareLogic) {
+	.controller('PhysiobuddyCalibrateCtrl', ['$scope', '$state', '$stateParams', '$ionicPopup', '$interval', 'physiobuddyCalibratePlot', 'physiobuddyLogic', 'dataHandler', 'hardwareLogic','sound',
+    function($scope, $state, $stateParams, $ionicPopup, $interval, physiobuddyCalibratePlot, physiobuddyLogic, dataHandler, hardwareLogic, sound) {
 
     	var afID;
     	var frameCounts = 0;
@@ -354,6 +367,7 @@
 	    	$scope.physiobuddyMVC.msg = $scope.physiobuddyMVC.state.msg.replace('XT',''+$scope.physiobuddyMVC.counter);
 	    	// console.log('calibrate counter' + $scope.physiobuddyMVC.msg);
        		physiobuddyCalibratePlot.addText($scope.physiobuddyMVC.msg);
+	    	sound.beep();
 	    };
 
     	/* Step 2 : Calibrate Brace
