@@ -107,7 +107,7 @@
     		flexvolt.api.turnDataOff();
     		console.log('done exercise')
     		//stop the function from continuing to be called
-    		$interval.cancel();
+    		$interval.cancel(stateIntervalExercise);
 
     	};
 
@@ -137,8 +137,8 @@
 	        		//if dataOut is higher percentage of MVC than 60 then set flag to true
 	        		atMVC = true;
 	        		physiobuddyExercisePlot.addText('Great Job! Keep pushing!');
-	        		physiobuddyExercisePlot.addCountdownText(heldAtMVC);
-	        		if(heldAtMVC >=5){
+	        		physiobuddyExercisePlot.addCountdownText('Holding your MVC for: ' +heldAtMVC);
+	        		if(heldAtMVC >5){
 	        			doneExercise();
 	        		}
 	        		heldAtMVC++;
@@ -147,8 +147,7 @@
 	        		if (atMVC) {
 	        			if (mvcMiss<3){
 		        			// if below mvc but it hasn't been 3 seconds
-		        			physiobuddyExercisePlot.addCountdownText(heldAtMVC);
-		        			// physiobuddyExercisePlot.addText('push harder!');
+		        			physiobuddyExercisePlot.addCountdownText('Holding your MVC for: ' + heldAtMVC);
 		        			heldAtMVC++;
 		        			mvcMiss ++;	        				
 	        			} else {
@@ -282,13 +281,13 @@
       	var states = {
 	        getReady: {
 	          name: 'ready',
-	          msg: 'Maximum voluntary contraction measurement starts in XT, get ready to push as hard as you can!',
+	          msg: 'Push as hard as you can in XT seconds!',
 	          count: 3,
 	          nextState: 'measuring'
 	        },
 	        measuring: {
 	          name: 'measuring',
-	          msg: 'Measuring your MVC - keep pushing, XT s remaining!',
+	          msg: 'Keep pushing, XT s remaining!',
 	          count: 5,
 	          nextState: 'results'
 	        },
@@ -325,7 +324,7 @@
 			physiobuddyLogic.settings.mvc = mvc*100;
 			flexvolt.api.turnDataOff();
 			$state.go('physiobuddyCalibrated');
-			$interval.cancel();
+			$interval.cancel(stateInterval);
 	    };
 
 	    //realtime processing data, called every second

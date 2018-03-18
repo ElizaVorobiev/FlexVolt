@@ -370,7 +370,7 @@ angular.module('flexvolt.d3plots', [])
         barMax = vMax;
         // width = window.innerWidth - margin.left - margin.right,
         // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
-        width = window.innerWidth - margin.left - margin.right,
+        width = Math.floor(window.innerWidth*.6) - margin.left - margin.right,
         height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
         api.settings = settings;
         api.reset();
@@ -497,25 +497,28 @@ angular.module('flexvolt.d3plots', [])
     // width = window.innerWidth - margin.left - margin.right,
     // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
     width = window.innerWidth - margin.left - margin.right,
-    height = 300 - margin.top - headerPadding - margin.bottom - footerPadding;
+    height = 400 - margin.top - headerPadding - margin.bottom - footerPadding;
     var yMax;
 
     var svg, xScale, xAxis, yScale, yAxis, data = [], yLabel;
     var textLabel = undefined;
     var exerciseCount = undefined;
 
+    var counterSvg;
+
   api.reset = function(){
       if (svg){
         d3.select('svg').remove();
       }
-      width = width - margin.left - margin.right;
-      height = width;
+      if (counterSvg){
+        d3.select('#physiobuddyExerciseCounterWindow svg').remove();
+      }
       radius = Math.min(width, height) / 2;
-      svg = d3.select(plotElement).append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+      svg = d3.select(plotElement).append('svg').attr('width', width + margin.left + margin.right).attr('height', height +margin.top +margin.bottom);
 
-      chart = svg.append('g').attr('transform', `translate(${(width + margin.left) / 2}, ${(height + margin.top) / 2})`);
+      chart = svg.append('g').attr('transform', `translate(${(width + margin.left + margin.right)/2}, 250)`);
 
-
+      counterSvg = d3.select('#physiobuddyExerciseCounterWindow').append('svg').attr('width', width).attr('height', height/4);
 
     // build gauge bg
     //draw the first section:
@@ -528,6 +531,7 @@ angular.module('flexvolt.d3plots', [])
     //draw needle
       needle = new Needle(150, 10);
       needle.drawOn(chart, 0);
+
       needle.animateOn(chart, chartSettings.percent);
 
         
@@ -539,7 +543,7 @@ angular.module('flexvolt.d3plots', [])
     //   data[k].value = Math.max(0,dataIn[k]); // adjusting to actual
     // }
   
-    needle.animateOn(chart, dataIn);
+    needle.animateOn(chart,Math.min(1, dataIn));//make sure needle doesn't go over the edge
 
 
 
@@ -548,7 +552,7 @@ angular.module('flexvolt.d3plots', [])
         svg.append('text')
           .attr('id','exercisePrompt')
           .attr('x', width/2)
-          .attr('y', margin.top+height/2)
+          .attr('y', margin.top+height)
           .text(textLabel)
           .attr('fill','black')
           .attr('text-anchor', 'middle')
@@ -556,10 +560,10 @@ angular.module('flexvolt.d3plots', [])
       }
       if (exerciseCount){
         d3.select('#exerciseCount').remove();
-        svg.append('text')
+        counterSvg.append('text')
           .attr('id','exerciseCount')
           .attr('x', width/2)
-          .attr('y', margin.top+(height/2)+20)
+          .attr('y', 50)
           .text(exerciseCount)
           .attr('fill','black')
           .attr('text-anchor', 'middle')
@@ -593,8 +597,8 @@ angular.module('flexvolt.d3plots', [])
       plotElement = element;
       // width = window.innerWidth - margin.left - margin.right,
       // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
-      width = window.innerWidth - margin.left - margin.right,
-      height = 600 - margin.top - headerPadding - margin.bottom - footerPadding;
+      width = Math.floor(window.innerWidth*.8) - margin.left - margin.right,
+      height = 500 - margin.top - headerPadding - margin.bottom - footerPadding;
       api.settings = settings;
       arc1StartRad = ((chartSettings.totalPercent)*360 *Math.PI)/180;
       arc1EndRad = arc1StartRad + ((chartSettings.section1Perc*360 *Math.PI)/180);
@@ -606,10 +610,14 @@ angular.module('flexvolt.d3plots', [])
   }
 
   api.doneExercise = function(){
-    if (svg){
-        d3.select('svg').remove();
-    }
     api.addText('Congratulations you have finished your exercise!');
+    // if (svg){
+    //     d3.select('svg').remove();
+    // }
+    // if (counterSvg){
+    //     d3.select('#physiobuddyExerciseCounterWindow svg').remove();
+    // }
+
   };
 
   api.resize = function(){

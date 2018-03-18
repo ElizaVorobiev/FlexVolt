@@ -219,7 +219,7 @@
         .state('physiobuddyCalibrated', {
             url: '/physiobuddyCalibrated',
             templateUrl: 'pages/physiobuddy/physiobuddyCalibrated.html',
-            // controller: 'PhysiobuddyCtrl',
+            controller: 'PhysiobuddyCtrl',
             // onEnter: dataOn,
             // onExit: exitFunction
         })

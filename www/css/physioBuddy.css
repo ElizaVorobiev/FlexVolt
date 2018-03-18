@@ -98,7 +98,11 @@
 
 .calibrate-content-pictures{
   text-align: center;
+}
 
+#mvcPrompt{
+  text-align: center;
+  word-break: keep-all;
 }
 
 .title {
