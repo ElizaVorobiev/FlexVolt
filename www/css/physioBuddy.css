@@ -117,7 +117,7 @@
   fill: #4F4F4F;
 }
 
-#backtoStart { 
+#backtoStart .button { 
     position: absolute;
     right: 10px;
     top: 10px;
