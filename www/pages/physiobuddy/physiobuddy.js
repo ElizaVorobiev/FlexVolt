@@ -114,7 +114,7 @@
 			physiobuddyExercisePlot.doneExercise();
     		flexvolt.api.turnDataOff();
     		console.log('done exercise');
-    		if ($scope.repNum > 4){
+    		if ($scope.repNum > $scope.totalRep-1){
     			$scope.openModal(2);
     		} else {
     			$scope.openModal(1);

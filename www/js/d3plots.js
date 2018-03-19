@@ -365,10 +365,10 @@ angular.module('flexvolt.d3plots', [])
     }
 
     api.afterMVC = function(){
-      if (svg){
-          d3.select('svg').remove();
-      }
-      api.addText('Your MVC has been calculated :)');
+      // if (svg){
+      //     d3.select('svg').remove();
+      // }
+      // api.addText('Your MVC has been calculated :)');
       
     };
 
