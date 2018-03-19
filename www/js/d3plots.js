@@ -288,7 +288,7 @@ angular.module('flexvolt.d3plots', [])
         xScale = d3.scale.linear()
             .range([0, width])
             .domain([0, barMax]);
-        
+
         svg.selectAll("rect") // this is what actually creates the bars
           .data(data)
         .enter().append("rect")
@@ -296,7 +296,7 @@ angular.module('flexvolt.d3plots', [])
           .attr("height", 20)
           .attr("rx", 5) // rounded corners
           .attr("ry", 5);
-          
+
         // svg.selectAll("text") // adding the text labels to the bar
         //   .data(data)
         // .enter().append("text")
@@ -314,7 +314,7 @@ angular.module('flexvolt.d3plots', [])
       // for (var k = 0; k < api.settings.nChannels; k++){
       //   data[k].value = Math.max(0,dataIn[k]); // adjusting to actual
       // }
-      var dataMax = Math.max(5, Math.max(...dataIn)*3500);//temporarly give large value
+      var dataMax = Math.max(5, Math.max(...dataIn)*10000);//temporarly give large value
       data =[dataMax]
       svg.selectAll('rect').remove();
       svg.selectAll('bars')
@@ -352,7 +352,7 @@ angular.module('flexvolt.d3plots', [])
       d3.select('#mvcPrompt').remove();
       textLabel = undefined;
     };
-   
+
     api.init = function(element, settings, vMax){
         plotElement = element;
         barMax = 0.05;
@@ -369,7 +369,7 @@ angular.module('flexvolt.d3plots', [])
           d3.select('svg').remove();
       }
       api.addText('Your MVC has been calculated :)');
-      
+
     };
 
 
@@ -489,8 +489,8 @@ angular.module('flexvolt.d3plots', [])
       d3.selectAll('.arc').remove();
       //make green the thicker arc
       arc1 = d3.svg.arc().outerRadius(thinOuterRadius).innerRadius(thinInnerRadius).startAngle(arc1StartRad).endAngle(arc1EndRad);
-      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1); 
-      
+      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1);
+
       arc2 = d3.svg.arc().outerRadius(wideOuterRadius).innerRadius(wideInnerRadius).startAngle(arc2StartRad).endAngle(arc2EndRad);
       chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
   }
@@ -500,8 +500,8 @@ angular.module('flexvolt.d3plots', [])
       d3.selectAll('.arc').remove();
       //make green the thicker arc
       arc1 = d3.svg.arc().outerRadius(wideOuterRadius).innerRadius(wideInnerRadius).startAngle(arc1StartRad).endAngle(arc1EndRad);
-      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1); 
-      
+      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1);
+
       arc2 = d3.svg.arc().outerRadius(thinOuterRadius).innerRadius(thinInnerRadius).startAngle(arc2StartRad).endAngle(arc2EndRad);
       chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
   }
@@ -540,7 +540,7 @@ angular.module('flexvolt.d3plots', [])
     // build gauge bg
     //draw the first section:
       arc1 = d3.svg.arc().outerRadius(thinOuterRadius).innerRadius(thinInnerRadius).startAngle(arc1StartRad).endAngle(arc1EndRad);
-      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1); 
+      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1);
     //draw the second section
       arc2 = d3.svg.arc().outerRadius(wideOuterRadius).innerRadius(wideInnerRadius).startAngle(arc2StartRad).endAngle(arc2EndRad);
       chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
@@ -551,7 +551,7 @@ angular.module('flexvolt.d3plots', [])
 
       needle.animateOn(chart, chartSettings.percent);
 
-        
+
   };
 
   api.update = function(dataIn){
