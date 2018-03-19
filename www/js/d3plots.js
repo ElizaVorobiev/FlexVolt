@@ -395,7 +395,9 @@ angular.module('flexvolt.d3plots', [])
     addText: undefined,
     removeText: undefined,
     addCountdownText: undefined,
-    removeCountdownText: undefined
+    removeCountdownText: undefined,
+    inGreen: undefined,
+    inRed: undefined
   };
 
   var Needle, needle, arc1, arc2, arc1EndRad, arc1StartRad, barWidth, chart, chartInset, arc2EndRad, arc2StartRad, bar2Width, chart2Inset, degToRad, plotElement, endPadRad, height, i, margin, needle, numSections, padRad, percToDeg, percToRad, percent, radius, ref, sectionIndx, sectionPerc, startPadRad, svg, totalPercent, width;
@@ -421,6 +423,13 @@ angular.module('flexvolt.d3plots', [])
       }
   };
 
+  bar2Width = chartSettings.barWidth - 8;
+  chart2Inset = chartSettings.chartInset +2;
+  //define the different thicknesses for arcs
+  var wideInnerRadius = chartSettings.radius - chartSettings.chartInset - chartSettings.barWidth;
+  var wideOuterRadius = chartSettings.radius;
+  var thinInnerRadius = chartSettings.radius - chart2Inset - bar2Width;
+  var thinOuterRadius = chartSettings.radius - chartSettings.chartInset/2;
   percToDeg = function(perc) {
     return perc * 360;
   };
@@ -475,7 +484,27 @@ angular.module('flexvolt.d3plots', [])
     }
 
   };
+  api.inGreen = function() {
+      //remove any curent arcs and then redraw
+      d3.selectAll('.arc').remove();
+      //make green the thicker arc
+      arc1 = d3.svg.arc().outerRadius(thinOuterRadius).innerRadius(thinInnerRadius).startAngle(arc1StartRad).endAngle(arc1EndRad);
+      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1); 
+      
+      arc2 = d3.svg.arc().outerRadius(wideOuterRadius).innerRadius(wideInnerRadius).startAngle(arc2StartRad).endAngle(arc2EndRad);
+      chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
+  }
 
+  api.inRed = function() {
+      //remove any curent arcs and then redraw
+      d3.selectAll('.arc').remove();
+      //make green the thicker arc
+      arc1 = d3.svg.arc().outerRadius(wideOuterRadius).innerRadius(wideInnerRadius).startAngle(arc1StartRad).endAngle(arc1EndRad);
+      chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1); 
+      
+      arc2 = d3.svg.arc().outerRadius(thinOuterRadius).innerRadius(thinInnerRadius).startAngle(arc2StartRad).endAngle(arc2EndRad);
+      chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
+  }
 
    var mar, margin, width, height, plotElement;
     mar = 10;
@@ -510,10 +539,10 @@ angular.module('flexvolt.d3plots', [])
 
     // build gauge bg
     //draw the first section:
-      arc1 = d3.svg.arc().outerRadius(chartSettings.radius).innerRadius(chartSettings.radius - chartSettings.chartInset - chartSettings.barWidth).startAngle(arc1StartRad).endAngle(arc1EndRad);
+      arc1 = d3.svg.arc().outerRadius(thinOuterRadius).innerRadius(thinInnerRadius).startAngle(arc1StartRad).endAngle(arc1EndRad);
       chart.append('path').attr('class', `arc chart-color1`).attr('d', arc1); 
     //draw the second section
-      arc2 = d3.svg.arc().outerRadius(chartSettings.radius-chartSettings.chartInset/2).innerRadius(chartSettings.radius - chart2Inset - bar2Width).startAngle(arc2StartRad).endAngle(arc2EndRad);
+      arc2 = d3.svg.arc().outerRadius(wideOuterRadius).innerRadius(wideInnerRadius).startAngle(arc2StartRad).endAngle(arc2EndRad);
       chart.append('path').attr('class', `arc chart-color2`).attr('d', arc2);
 
     //draw needle
@@ -530,7 +559,11 @@ angular.module('flexvolt.d3plots', [])
     // for (var k = 0; k < api.settings.nChannels; k++){
     //   data[k].value = Math.max(0,dataIn[k]); // adjusting to actual
     // }
-  
+    if (dataIn > chartSettings.percent) {
+      api.inGreen();
+    } else {
+      api.inRed();
+    }
     needle.animateOn(chart,Math.min(1, dataIn));//make sure needle doesn't go over the edge
 
 
@@ -592,8 +625,6 @@ angular.module('flexvolt.d3plots', [])
       arc1EndRad = arc1StartRad + ((chartSettings.section1Perc*360 *Math.PI)/180);
       arc2StartRad = arc1EndRad;
       arc2EndRad = arc2StartRad + ((chartSettings.section2Perc*360 *Math.PI)/180);
-      bar2Width = chartSettings.barWidth - 8;
-      chart2Inset = chartSettings.chartInset +2;
       api.reset();
   }
 
