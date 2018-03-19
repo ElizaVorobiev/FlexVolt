@@ -273,7 +273,7 @@ angular.module('flexvolt.d3plots', [])
       removeText: undefined
     };
 
-    data = [0.9]
+    data = [0]
     api.reset = function(){
         if (svg){
           d3.select('svg').remove();
@@ -314,7 +314,7 @@ angular.module('flexvolt.d3plots', [])
       // for (var k = 0; k < api.settings.nChannels; k++){
       //   data[k].value = Math.max(0,dataIn[k]); // adjusting to actual
       // }
-      var dataMax = Math.max(5, Math.max(...dataIn)*1000);//temporarly give large value
+      var dataMax = Math.max(5, Math.max(...dataIn)*3500);//temporarly give large value
       data =[dataMax]
       svg.selectAll('rect').remove();
       svg.selectAll('bars')
@@ -325,28 +325,16 @@ angular.module('flexvolt.d3plots', [])
         // .attr('y', width})
         .attr('width', function(d) {return d})
         // .attr('height', function(d) {return height-yScale(d.value);})
-        .attr("height", 20)
+        .attr("height", 40)
         .attr("rx", 5) // rounded corners
         .attr("ry", 5);
-
-        // svg.selectAll('text').remove();
-        // svg.selectAll("text") // adding the text labels to the bar
-        //   .data(data)
-        // .enter().append("text")
-        //   .attr("x", function(d) {return d})
-        //   .attr("y", 10) // y position of the text inside bar
-        //   .attr("dx", -3) // padding-right
-        //   .attr("dy", ".35em") // vertical-align: middle
-        //   .attr("text-anchor", "end") // text-align: right
-        //   .text(String);
-
 
         if (textLabel){
           d3.select('#mvcPrompt').remove();
           svg.append('text')
             .attr('id','mvcPrompt')
             .attr('x', width/2)
-            .attr('y', margin.top+height/2)
+            .attr('y', margin.top+height/1.75)
             .text(textLabel)
             .attr('fill','black')
             .attr('text-anchor', 'middle')
@@ -367,7 +355,7 @@ angular.module('flexvolt.d3plots', [])
    
     api.init = function(element, settings, vMax){
         plotElement = element;
-        barMax = vMax;
+        barMax = 0.05;
         // width = window.innerWidth - margin.left - margin.right,
         // height = window.innerHeight - margin.top - headerPadding - margin.bottom - footerPadding;
         width = Math.floor(window.innerWidth*.6) - margin.left - margin.right,

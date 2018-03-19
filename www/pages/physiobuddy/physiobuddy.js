@@ -442,7 +442,7 @@
 	                for (var i= 0; i < physiobuddyLogic.settings.filters.length; i++){
 	                    dataHandler.addFilter(physiobuddyLogic.settings.filters[i]);
 	                }
-	                physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, hardwareLogic.settings.vMax);
+	                physiobuddyCalibratePlot.init('#physiobuddyCalibrateWindow', physiobuddyLogic.settings, 1000);
 	                paintStep();
 	            });
 	        }

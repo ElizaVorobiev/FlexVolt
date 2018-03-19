@@ -100,6 +100,31 @@
   text-align: center;
 }
 
+#physiobuddyCalibrateWindow rect {
+  height: 40px;
+  fill: #30AD63;
+}
+
+.chart-color1 {
+  fill: #E54D42;
+}
+
+.chart-color2 {
+  fill: #30AD63;
+}
+
+.needle-center, .needle {
+  fill: #4F4F4F;
+}
+
+#backtoStart { 
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+}
+
 #mvcPrompt{
   text-align: center;
   word-break: keep-all;

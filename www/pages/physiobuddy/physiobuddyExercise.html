@@ -17,17 +17,15 @@
     <!-- <not-connected></not-connected> -->
         <div class = "exercise-content">
             <div class = "row", style = "justify-content: center; align-items: center;">
-            <h2 class=  "exercise-content-title">  Flat Knee Flex</h2></div>
+            <h2 class=  "exercise-content-title">  Flat Knee Flex</h2>
+                  <div class="calibrate-content-button" id = "backtoStart"><button ui-sref = "physiobuddy", class = "button"> Home</button></div>
+            </div>
             
             <div class = "row", style = "justify-content: center; align-items: center"> <p> <span id = "repNum">{{repNum}}/{{totalRep}}</span> Repititions</p></div>
 
             <div class = "row", style = "justify-content: center; align-items: center;", id = "physiobuddyExerciseWindow" ></div>
             <div class = "row", style = "justify-content: center; align-items: center;", id = "physiobuddyExerciseCounterWindow" ></div>
             <div class="calibrate-content-button"><button  ng-click = "startExercise($index)", class = "button">Start Recording</button></div>
-            <button ng-click="openModal(1)" class="button">Rest Modal</button>
-            <button ng-click="openModal(2)" class="button">Badge Modal</button>
-            <br>
-            <div class="calibrate-content-button"><button ui-sref = "physiobuddy", class = "button"> Home</button></div>
            <div class="exercise-footer">
                     <div class = "row"> 
                         <div class="col" style="margin: auto;">
