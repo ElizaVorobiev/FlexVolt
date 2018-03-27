@@ -68,9 +68,9 @@
 	    var calculatedMvc = physiobuddyLogic.settings.mvc;
 	    $scope.pageLogic = physiobuddyLogic;
 	    var exerciseData = [], percentMVC = .60, stateIntervalExercise;
-	    var atMVC = false, heldAtMVC = 0, mvcMiss = 0;
+	    var atMVC = false, heldAtMVC = 0, mvcMiss = 0, heldAtMVCGoal = 5;
       	$scope.repNum = 0;
-      	$scope.totalRep = 5;
+      	$scope.totalRep = 2;
       	var states = {
 	        getReady: {
 	          name: 'ready',
@@ -151,7 +151,7 @@
 	        		atMVC = true;
 	        		physiobuddyExercisePlot.addText('Great Job! Keep pushing!');
 	        		physiobuddyExercisePlot.addCountdownText('Holding your MVC for: ' +heldAtMVC);
-	        		if(heldAtMVC >5){
+	        		if(heldAtMVC > heldAtMVCGoal){
 	        			doneExercise();
 	        		}
 	        		heldAtMVC++;

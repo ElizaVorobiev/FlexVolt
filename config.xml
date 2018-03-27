@@ -21,11 +21,6 @@
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <plugin name="cordova-plugin-bluetooth-serial" spec="~0.4.6" />
-    <plugin name="cordova-plugin-device" spec="~1.1.4" />
-    <plugin name="cordova-plugin-ble-central" spec="~1.1.4">
-        <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="This app would like to scan for a FlexVolt sensor." />
-    </plugin>
     <platform name="android">
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -78,10 +73,15 @@
         <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
     </platform>
+    <engine name="ios" spec="~4.3.1" />
+    <engine name="android" spec="~6.1.2" />
+    <plugin name="cordova-plugin-bluetooth-serial" spec="~0.4.6" />
+    <plugin name="cordova-plugin-device" spec="~1.1.4" />
+    <plugin name="cordova-plugin-ble-central" spec="~1.1.4">
+        <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="This app would like to scan for a FlexVolt sensor." />
+    </plugin>
     <plugin name="cordova-plugin-whitelist" spec="~1.3.2" />
     <plugin name="cordova-plugin-statusbar" spec="~2.2.3" />
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.3" />
-    <engine name="ios" spec="~4.3.1" />
-    <engine name="android" spec="~6.1.2" />
 </widget>

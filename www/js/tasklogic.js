@@ -432,7 +432,7 @@ angular.module('flexvolt.taskLogic', [])
             } else {
               // Default filters - band pass then rectify and then averaging
               var Filter1 = angular.copy(logicOptions.filterOptions.filter(function(item){ return item.name === 'Frequency - Band Pass';})[0]);
-              Filter1.params.f1.value = 10;
+              Filter1.params.f1.value = 20;
               Filter1.params.f2.value = 500;
               settings.filters.push(Filter1);
               
